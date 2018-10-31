@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 15
+VisualStudioVersion = 15.0.28010.2048
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TailendersApi.Functions", "TailendersApi.Functions\TailendersApi.Functions.csproj", "{0A1AD7D6-4E96-4C63-BF04-23801F37648A}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TailendersApi.Contracts", "TailendersApi.Contracts\TailendersApi.Contracts.csproj", "{68D2A49C-07E1-4C61-A784-4A149B02A22E}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{0A1AD7D6-4E96-4C63-BF04-23801F37648A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0A1AD7D6-4E96-4C63-BF04-23801F37648A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0A1AD7D6-4E96-4C63-BF04-23801F37648A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0A1AD7D6-4E96-4C63-BF04-23801F37648A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{68D2A49C-07E1-4C61-A784-4A149B02A22E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{68D2A49C-07E1-4C61-A784-4A149B02A22E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{68D2A49C-07E1-4C61-A784-4A149B02A22E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{68D2A49C-07E1-4C61-A784-4A149B02A22E}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {A69838F0-AD7A-4F55-8376-CE8BD0A160B7}
+	EndGlobalSection
+EndGlobal
