@@ -4,7 +4,7 @@ using System.Text;
 
 namespace TailendersApi.Contracts
 {
-    class Message
+    public class Message
     {
     }
 }

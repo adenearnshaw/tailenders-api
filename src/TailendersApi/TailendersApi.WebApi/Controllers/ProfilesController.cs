@@ -45,10 +45,8 @@ namespace TailendersApi.WebApi.Controllers
 
         // POST api/profiles
         [HttpPost]
-        public ActionResult<Profile> Post([FromBody] string value)
+        public ActionResult<Profile> Post([FromBody] Profile model)
         {
-            var model = JsonConvert.DeserializeObject<Profile>(value);
-
             var owner = CheckClaimMatch(ObjectIdElement);
             if (owner != model.Id)
             {
@@ -60,31 +58,29 @@ namespace TailendersApi.WebApi.Controllers
             return Ok(model);
         }
 
-        // PUT api/values/5
-        [HttpPut("{id}")]
-        public ActionResult<Profile> Put(string id, [FromBody] string value)
+        // PUT api/profiles
+        [HttpPut]
+        public ActionResult<Profile> Put([FromBody] Profile updatedModel)
         {
-            var updatedModel = JsonConvert.DeserializeObject<Profile>(value);
-
             var owner = CheckClaimMatch(ObjectIdElement);
             if (owner != updatedModel.Id)
             {
                 return Forbid();
             }
 
-            var oldModel = db.FirstOrDefault(p => string.Equals(p.Id, id));
+            var oldModel = db.FirstOrDefault(p => string.Equals(p.Id, updatedModel.Id));
             if (oldModel == null)
             {
                 return BadRequest("Cannot update. Profile with given ID does not exist");
             }
 
-            oldModel.Name = updatedModel.Name;
-            //TODO Add additional properties
+            db.Remove(oldModel);
+            db.Add(updatedModel);
 
-            return Ok(oldModel);
+            return Ok(updatedModel);
         }
 
-        // DELETE api/values/5
+        // DELETE api/profiles/d12cc0c1-c531-4e15-95a8-2093b951597d
         [HttpDelete("{id}")]
         public ActionResult Delete(string id)
         {
