@@ -13,6 +13,9 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
+using TailendersApi.Repository;
+using Microsoft.EntityFrameworkCore;
+using TailendersApi.WebApi.Managers;
 
 namespace TailendersApi.WebApi
 {
@@ -33,7 +36,15 @@ namespace TailendersApi.WebApi
 
             services.AddMvc()
                     .SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
+
+            var conn = Configuration["AzureDbConnection"];
+            services.AddDbContext<TailendersContext>(opts => opts.UseSqlServer(conn));
+
+            services.AddScoped<IPairingsRepository, PairingsRepository>();
+            services.AddScoped<IProfilesRepository, ProfilesRepository>();
+            services.AddScoped<IProfilesManager, ProfilesManager>();
         }
+
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)

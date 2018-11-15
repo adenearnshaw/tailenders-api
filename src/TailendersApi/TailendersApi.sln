@@ -3,9 +3,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
 VisualStudioVersion = 15.0.28010.2048
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TailendersApi.Contracts", "TailendersApi.Contracts\TailendersApi.Contracts.csproj", "{68D2A49C-07E1-4C61-A784-4A149B02A22E}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TailendersApi.Contracts", "TailendersApi.Contracts\TailendersApi.Contracts.csproj", "{68D2A49C-07E1-4C61-A784-4A149B02A22E}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TailendersApi.WebApi", "TailendersApi.WebApi\TailendersApi.WebApi.csproj", "{99829BF1-9D77-45D2-989D-DF97415C741F}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TailendersApi.WebApi", "TailendersApi.WebApi\TailendersApi.WebApi.csproj", "{99829BF1-9D77-45D2-989D-DF97415C741F}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TailendersApi.Repository", "TailendersApi.Repository\TailendersApi.Repository.csproj", "{8E80CD29-62EB-438B-BC87-91BDAFF75159}"
 EndProject

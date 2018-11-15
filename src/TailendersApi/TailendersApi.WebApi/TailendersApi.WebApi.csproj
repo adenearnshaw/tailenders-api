@@ -7,6 +7,9 @@
 
   <ItemGroup>
     <Folder Include="wwwroot\" />
+    <Folder Include="Managers\" />
+    <Folder Include="Exceptions\" />
+    <Folder Include="Mappers\" />
   </ItemGroup>
 
   <ItemGroup>
