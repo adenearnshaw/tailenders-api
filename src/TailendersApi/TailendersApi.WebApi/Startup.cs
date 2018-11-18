@@ -16,6 +16,7 @@ using Microsoft.Extensions.Options;
 using TailendersApi.Repository;
 using Microsoft.EntityFrameworkCore;
 using TailendersApi.WebApi.Managers;
+using TailendersApi.WebApi.Services;
 
 namespace TailendersApi.WebApi
 {
@@ -41,8 +42,10 @@ namespace TailendersApi.WebApi
             services.AddDbContext<TailendersContext>(opts => opts.UseSqlServer(conn));
 
             services.AddScoped<IPairingsRepository, PairingsRepository>();
+            services.AddScoped<IProfileImagesRepository, ProfileImagesRepository>();
             services.AddScoped<IProfilesRepository, ProfilesRepository>();
             services.AddScoped<IProfilesManager, ProfilesManager>();
+            services.AddTransient<IImageStorageService, ImageStorageService>();
         }
 
 

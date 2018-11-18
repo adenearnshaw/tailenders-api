@@ -14,7 +14,6 @@ namespace TailendersApi.Repository.Entities
         public double Longitude { get; set; }
         public string Bio { get; set; }
         public int FavouritePosition { get; set; }
-        public string PhotoUrlData { get; set; }
 
         public int SearchShowInCategory { get; set; }
         public int SearchForCategory { get; set; }
@@ -26,5 +25,6 @@ namespace TailendersApi.Repository.Entities
         public DateTime UpdatedAt { get; set; }
 
         public virtual ICollection<PairingEntity> Pairings { get; set; }
+        public virtual ICollection<ProfileImageEntity> ProfileImages { get; set; }
     }
 }

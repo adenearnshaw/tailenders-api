@@ -1,32 +1,39 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 using TailendersApi.Contracts;
 using TailendersApi.Repository;
-using TailendersApi.WebApi.Exceptions;
+using TailendersApi.Repository.Entities;
 using TailendersApi.WebApi.Mappers;
+using TailendersApi.WebApi.Services;
 
 namespace TailendersApi.WebApi.Managers
 {
     public interface IProfilesManager
     {
-        Task<Profile> GetProfile(string userId);
+        Task<Profile> GetProfile(string profileId);
         Task<Profile> AddProfile(Profile model);
         Task<Profile> UpdateProfile(Profile model);
         Task DeleteProfile(string userId);
+
+        Task<ProfileImage> UploadProfileImage(string profileId, byte[] image);
     }
 
     public class ProfilesManager : IProfilesManager
     {
         private readonly IProfilesRepository _profilesRepository;
+        private readonly IProfileImagesRepository _profileImagesRepository;
         private readonly IPairingsRepository _pairingsRepository;
+        private readonly IImageStorageService _imageStorageService;
 
         public ProfilesManager(IProfilesRepository profilesRepository,
-                                IPairingsRepository pairingsRepository)
+                               IProfileImagesRepository profileImagesRepository,
+                               IPairingsRepository pairingsRepository,
+                               IImageStorageService imageStorageService)
         {
             _profilesRepository = profilesRepository;
+            _profileImagesRepository = profileImagesRepository;
             _pairingsRepository = pairingsRepository;
+            _imageStorageService = imageStorageService;
         }
 
         public async Task<Profile> GetProfile(string profileId)
@@ -56,6 +63,24 @@ namespace TailendersApi.WebApi.Managers
         {
             await _pairingsRepository.DeletePairings(profileId);
             await _profilesRepository.DeleteProfile(profileId);
+        }
+
+        public async Task<ProfileImage> UploadProfileImage(string profileId, byte[] image)
+        {
+            var fileName = $"{Guid.NewGuid()}.jpg";
+            var blobUrl = await _imageStorageService.StoreImage(fileName, image);
+
+            var entity = new ProfileImageEntity
+            {
+                ImageUrl = blobUrl,
+                LastUpdated = DateTime.UtcNow,
+                ProfileId = profileId
+            };
+
+            var updatedEntity = await _profileImagesRepository.UpsertImage(entity);
+
+            var contract = ProfileImageMapper.ToContract(updatedEntity);
+            return contract;
         }
     }
 }

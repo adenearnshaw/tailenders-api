@@ -56,5 +56,7 @@ namespace TailendersApi.Repository
             _db.Remove<ProfileEntity>(profile);
             await _db.SaveChangesAsync();
         }
+
+
     }
 }

@@ -1,8 +1,10 @@
-﻿using System;
+﻿using System.IO;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using TailendersApi.Contracts;
+using TailendersApi.WebApi.Extensions;
 using TailendersApi.WebApi.Managers;
 
 namespace TailendersApi.WebApi.Controllers
@@ -10,15 +12,8 @@ namespace TailendersApi.WebApi.Controllers
     [Authorize]
     [Route("api/[controller]")]
     [ApiController]
-    public class ProfilesController : ControllerBase
+    public class ProfilesController : BaseController
     {
-
-        private const string ScopeElement = "http://schemas.microsoft.com/identity/claims/scope";
-        private const string ObjectIdElement = "http://schemas.microsoft.com/identity/claims/objectidentifier";
-
-        private const string ReadPermission = "te.read";
-        private const string WritePermission = "te.write";
-
         private readonly IProfilesManager _profilesManager;
 
         public ProfilesController(IProfilesManager profilesManager)
@@ -30,13 +25,13 @@ namespace TailendersApi.WebApi.Controllers
         [HttpGet("me")]
         public async Task<IActionResult> Get()
         {
-            var hasScope = HasRequiredScopes(ReadPermission);
+            var hasScope = User.HasRequiredScopes(ReadPermission);
             if (!hasScope)
             {
                 return Unauthorized();
             }
 
-            var owner = CheckClaimMatch(ObjectIdElement);
+            var owner = User.CheckClaimMatch(ObjectIdElement);
             if (string.IsNullOrEmpty(owner))
             {
                 return BadRequest(
@@ -52,13 +47,13 @@ namespace TailendersApi.WebApi.Controllers
         [HttpPost]
         public async Task<IActionResult> Post([FromBody] Profile model)
         {
-            var hasScope = HasRequiredScopes(WritePermission);
+            var hasScope = User.HasRequiredScopes(WritePermission);
             if (!hasScope)
             {
                 return Unauthorized();
             }
 
-            var owner = CheckClaimMatch(ObjectIdElement);
+            var owner = User.CheckClaimMatch(ObjectIdElement);
             if (owner != model.Id)
             {
                 return Forbid();
@@ -73,13 +68,13 @@ namespace TailendersApi.WebApi.Controllers
         [HttpPut]
         public async Task<IActionResult> Put([FromBody] Profile model)
         {
-            var hasScope = HasRequiredScopes(WritePermission);
+            var hasScope = User.HasRequiredScopes(WritePermission);
             if (!hasScope)
             {
                 return Unauthorized();
             }
 
-            var owner = CheckClaimMatch(ObjectIdElement);
+            var owner = User.CheckClaimMatch(ObjectIdElement);
             if (owner != model.Id)
             {
                 return Forbid();
@@ -94,13 +89,13 @@ namespace TailendersApi.WebApi.Controllers
         [HttpDelete("{id}")]
         public async Task<IActionResult> Delete(string id)
         {
-            var hasScope = HasRequiredScopes(WritePermission);
+            var hasScope = User.HasRequiredScopes(WritePermission);
             if (!hasScope)
             {
                 return Unauthorized();
             }
 
-            var owner = CheckClaimMatch(ObjectIdElement);
+            var owner = User.CheckClaimMatch(ObjectIdElement);
             if (owner != id)
             {
                 return Forbid();
@@ -111,24 +106,34 @@ namespace TailendersApi.WebApi.Controllers
             return Ok();
         }
 
-        
-        // Check user claims match task details
-        private string CheckClaimMatch(string claim)
+        // POST api/profiles/d12cc0c1-c531-4e15-95a8-2093b951597d/image
+        [HttpPost("{id}/image")]
+        public async Task<IActionResult> PostImage(string id, IFormFile file)
         {
-            try
+            var hasScope = User.HasRequiredScopes(WritePermission);
+            if (!hasScope)
             {
-                return User.FindFirst(claim).Value;
+                return Unauthorized();
             }
-            catch (Exception e)
-            {
-                return null;
-            }
-        }
 
-        // Validate to ensure the necessary scopes are present.
-        private bool HasRequiredScopes(String permission)
-        {
-            return User.FindFirst(ScopeElement).Value.Contains(permission);
+            var owner = User.CheckClaimMatch(ObjectIdElement);
+            if (owner != id)
+            {
+                return Forbid();
+            }
+
+            if (file.Length == 0)
+            {
+                return NoContent();
+            }
+
+            ProfileImage savedImage = null;
+            using (var ms = new MemoryStream())
+            {
+                await file.CopyToAsync(ms);
+                savedImage = await _profilesManager.UploadProfileImage(id, ms.ToArray());
+            }
+            return Ok(savedImage);
         }
     }
 }

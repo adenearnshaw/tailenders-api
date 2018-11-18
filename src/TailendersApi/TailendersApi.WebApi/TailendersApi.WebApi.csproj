@@ -2,6 +2,7 @@
 
   <PropertyGroup>
     <TargetFramework>netcoreapp2.1</TargetFramework>
+    <RuntimeFrameworkVersion>2.1.6</RuntimeFrameworkVersion>
     <UserSecretsId>aspnet-TailendersApi.WebApi-D8CF299B-286C-4048-9682-D67E2159DB26</UserSecretsId>
   </PropertyGroup>
 
@@ -10,12 +11,15 @@
     <Folder Include="Managers\" />
     <Folder Include="Exceptions\" />
     <Folder Include="Mappers\" />
+    <Folder Include="Extensions\" />
+    <Folder Include="Services\" />
   </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.App" />
     <PackageReference Include="Microsoft.AspNetCore.Authentication.AzureADB2C.UI" Version="2.1.1" />
     <PackageReference Include="Microsoft.AspNetCore.Razor.Design" Version="2.1.2" PrivateAssets="All" />
+    <PackageReference Include="WindowsAzure.Storage" Version="9.3.2" />
   </ItemGroup>
 
   <ItemGroup>
