@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using TailendersApi.Repository;
 
 namespace TailendersApi.Repository.Migrations
 {
     [DbContext(typeof(TailendersContext))]
-    partial class TailendersContextModelSnapshot : ModelSnapshot
+    [Migration("20181119221557_SP_SearchProfiles")]
+    partial class SP_SearchProfiles
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -118,7 +120,7 @@ namespace TailendersApi.Repository.Migrations
 
                     b.HasIndex("ProfileEntityID");
 
-                    b.ToTable("ProfileImages");
+                    b.ToTable("ProfileImageEntity");
                 });
 
             modelBuilder.Entity("TailendersApi.Repository.Entities.PairingEntity", b =>

@@ -21,7 +21,13 @@ namespace TailendersApi.WebApi.Controllers
 
         // GET
         [HttpGet("{id}")]
-        public async Task<IActionResult> Get(string id)
+        public async Task<IActionResult> Get(string id, 
+                                             [FromQuery]int category,
+                                             [FromQuery]int minAge,
+                                             [FromQuery]int maxAge,
+                                             [FromQuery]double lat,
+                                             [FromQuery]double lon,
+                                             [FromQuery]int take)
         {
             var hasScope = User.HasRequiredScopes(ReadPermission);
             if (!hasScope)

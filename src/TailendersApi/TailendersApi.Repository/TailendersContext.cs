@@ -11,6 +11,7 @@ namespace TailendersApi.Repository
         }
 
         public DbSet<ProfileEntity> Profiles { get; set; }
+        public DbSet<ProfileImageEntity> ProfileImages { get; set; }
         public DbSet<PairingEntity> Pairings { get; set; }
         public DbSet<ConversationEntity> Conversations { get; set; }
     }

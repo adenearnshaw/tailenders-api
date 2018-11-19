@@ -1,7 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
+using System.Data.SqlClient;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore;
 using TailendersApi.Repository.Entities;
 
 namespace TailendersApi.Repository
@@ -11,6 +12,7 @@ namespace TailendersApi.Repository
         Task<ProfileEntity> GetProfile(string profileId);
         Task<ProfileEntity> UpsertProfile(ProfileEntity entity);
         Task DeleteProfile(string profileId);
+        IEnumerable<ProfileEntity> SearchForProfiles(string profileId, int minAge, int maxAge, int[] categories);
     }
 
     public class ProfilesRepository : IProfilesRepository
@@ -35,11 +37,11 @@ namespace TailendersApi.Repository
 
             if (profile == null)
             {
-                _db.Add<ProfileEntity>(entity);
+                _db.Add(entity);
             }
             else
             {
-                _db.Update<ProfileEntity>(entity);
+                _db.Update(entity);
             }
             await _db.SaveChangesAsync();
 
@@ -53,10 +55,28 @@ namespace TailendersApi.Repository
             if (profile == null)
                 return;
 
-            _db.Remove<ProfileEntity>(profile);
+            _db.Remove(profile);
             await _db.SaveChangesAsync();
         }
 
+        public IEnumerable<ProfileEntity> SearchForProfiles(string profileId, int minAge, int maxAge, int[] categories)
+        {
+            var searchProcName = "SearchForProfiles";
+            var take = 20;
 
+            var userIdParam = new SqlParameter("@userId", profileId);
+            var takeParam = new SqlParameter("@take", take);
+            var minAgeParam = new SqlParameter("@minAge", minAge);
+            var maxAgeParam = new SqlParameter("@maxAge", maxAge);
+            var categoriesParam = new SqlParameter("@categories", string.Join(',', categories));
+
+            var results = _db.Profiles.FromSql($"{searchProcName} @p0, @p1, @p2, @p3, @p4", 
+                                               userIdParam, 
+                                               takeParam,
+                                               minAgeParam, 
+                                               maxAgeParam, 
+                                               categoriesParam);
+            return results.ToList();
+        }
     }
 }
