@@ -1,10 +1,18 @@
 ﻿using System.IO;
 using System.Net.Http;
 using System.Threading.Tasks;
+using Newtonsoft.Json;
+using TailendersApi.Client.Exceptions;
+using TailendersApi.Contracts;
 
 namespace TailendersApi.Client
 {
-    public class ProfileImageUploader
+    public interface IProfileImageUploader
+    {
+        Task<ProfileImage> UploadImage(Stream image);
+    }
+
+    public class ProfileImageUploader : IProfileImageUploader
     {
         private const string ImageUpdloadUrlFormat = "{0}/api/profiles/{1}/image";
 
@@ -23,7 +31,7 @@ namespace TailendersApi.Client
         /// </summary>
         /// <returns>Success state of upload</returns>
         /// <param name="image">Image stream (format must be jpeg)</param>
-        public async Task<bool> UploadImage(Stream image)
+        public async Task<ProfileImage> UploadImage(Stream image)
         {
             var url = string.Format(ImageUpdloadUrlFormat, _settings.BaseUrl, _credentials.UserId);
 
@@ -40,7 +48,14 @@ namespace TailendersApi.Client
             {
                 formData.Add(fileStreamContent);
                 var response = await client.PostAsync(url, formData);
-                return response.IsSuccessStatusCode;
+                if (!response.IsSuccessStatusCode)
+                {
+                    throw new ImageUploadException(response.ReasonPhrase);
+                }
+
+                var json = await response.Content.ReadAsStringAsync();
+                var profileImage = JsonConvert.DeserializeObject<ProfileImage>(json);
+                return profileImage;
             }
         }
     }

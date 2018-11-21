@@ -1,5 +1,4 @@
-﻿using System;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using TailendersApi.WebApi.Extensions;
@@ -43,6 +42,8 @@ namespace TailendersApi.WebApi.Controllers
             }
 
             //TODO: Search for profiles not matched
+            var results = await _profilesManager.SearchForProfiles(id);
+            return new OkObjectResult(results);
         }
     }
 }

@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using TailendersApi.Contracts;
 using TailendersApi.Repository;
@@ -16,6 +18,8 @@ namespace TailendersApi.WebApi.Managers
         Task DeleteProfile(string userId);
 
         Task<ProfileImage> UploadProfileImage(string profileId, byte[] image);
+
+        Task<IEnumerable<Profile>> SearchForProfiles(string profileId);
     }
 
     public class ProfilesManager : IProfilesManager
@@ -81,6 +85,23 @@ namespace TailendersApi.WebApi.Managers
 
             var contract = ProfileImageMapper.ToContract(updatedEntity);
             return contract;
+        }
+
+        public async Task<IEnumerable<Profile>> SearchForProfiles(string profileId)
+        {
+            var profile = await GetProfile(profileId);
+
+            var categories = profile.SearchForCategory == (int)SearchCategory.Both 
+                                    ? new int[] { (int)SearchCategory.Men, (int)SearchCategory.Women}
+                                    : new int[] { profile.SearchForCategory };
+
+            var searchResults = await _profilesRepository.SearchForProfiles(profileId,
+                                                                            profile.SearchMinAge,
+                                                                            profile.SearchMaxAge,
+                                                                            categories);
+
+            var profiles = searchResults.Select(ProfileMapper.ToContract);
+            return profiles;
         }
     }
 }

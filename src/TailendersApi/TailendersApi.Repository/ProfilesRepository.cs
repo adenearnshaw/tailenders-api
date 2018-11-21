@@ -12,7 +12,7 @@ namespace TailendersApi.Repository
         Task<ProfileEntity> GetProfile(string profileId);
         Task<ProfileEntity> UpsertProfile(ProfileEntity entity);
         Task DeleteProfile(string profileId);
-        IEnumerable<ProfileEntity> SearchForProfiles(string profileId, int minAge, int maxAge, int[] categories);
+        Task<List<ProfileEntity>> SearchForProfiles(string profileId, int minAge, int maxAge, int[] categories);
     }
 
     public class ProfilesRepository : IProfilesRepository
@@ -59,24 +59,27 @@ namespace TailendersApi.Repository
             await _db.SaveChangesAsync();
         }
 
-        public IEnumerable<ProfileEntity> SearchForProfiles(string profileId, int minAge, int maxAge, int[] categories)
+        public async Task<List<ProfileEntity>> SearchForProfiles(string profileId, int minAge, int maxAge, int[] categories)
         {
-            var searchProcName = "SearchForProfiles";
-            var take = 20;
+            return await Task.Run(() =>
+            {
+                var searchProcName = "SearchForProfiles";
+                var take = 20;
 
-            var userIdParam = new SqlParameter("@userId", profileId);
-            var takeParam = new SqlParameter("@take", take);
-            var minAgeParam = new SqlParameter("@minAge", minAge);
-            var maxAgeParam = new SqlParameter("@maxAge", maxAge);
-            var categoriesParam = new SqlParameter("@categories", string.Join(',', categories));
+                var userIdParam = new SqlParameter("@userId", profileId);
+                var takeParam = new SqlParameter("@take", take);
+                var minAgeParam = new SqlParameter("@minAge", minAge);
+                var maxAgeParam = new SqlParameter("@maxAge", maxAge);
+                var categoriesParam = new SqlParameter("@categories", string.Join(',', categories));
 
-            var results = _db.Profiles.FromSql($"{searchProcName} @p0, @p1, @p2, @p3, @p4", 
-                                               userIdParam, 
-                                               takeParam,
-                                               minAgeParam, 
-                                               maxAgeParam, 
-                                               categoriesParam);
-            return results.ToList();
+                var results = _db.Profiles.FromSql($"{searchProcName} @p0, @p1, @p2, @p3, @p4",
+                                                   userIdParam,
+                                                   takeParam,
+                                                   minAgeParam,
+                                                   maxAgeParam,
+                                                   categoriesParam);
+                return results.ToList();
+            });
         }
     }
 }

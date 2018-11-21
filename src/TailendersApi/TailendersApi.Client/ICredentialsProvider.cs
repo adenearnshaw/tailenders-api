@@ -4,6 +4,6 @@ namespace TailendersApi.Client
     public interface ICredentialsProvider
     {
         string UserId { get; }
-        string AuthenticationToke { get; }
+        string AuthenticationToken { get; }
     }
 }
