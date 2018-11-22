@@ -20,47 +20,50 @@ namespace TailendersApi.Client
 
         public async Task<T> Get<T>(string url)
         {
-            return await Send<T, T>(HttpMethod.Get, url);
+            var response = await Send(HttpMethod.Get, url);
+            var result = await GetResult<T>(response);
+            return result;
         }
 
         public async Task<TO> Post<TI,TO>(string url, TI body)
         {
-            return await Send<TI,TO>(HttpMethod.Post, url, body);
+            var json = JsonConvert.SerializeObject(body);
+
+            var response = await Send(HttpMethod.Post, url, json);
+            var result = await GetResult<TO>(response);
+            return result;
         }
 
         public async Task<TO> Put<TI,TO>(string url, TI body)
         {
-            return await Send<TI,TO>(HttpMethod.Put, url, body);
+            var json = JsonConvert.SerializeObject(body);
+
+            var response = await Send(HttpMethod.Put, url, json);
+            var result = await GetResult<TO>(response);
+            return result;
         }
 
         public async Task Delete(string url)
         {
-            await Send<string, string>(HttpMethod.Delete, url);
+            var response = await Send(HttpMethod.Delete, url);
+            await GetResult<string>(response);
         }
 
-        private async Task<TO> Send<TI,TO>(HttpMethod method, string url, TI body = default(TI))
+        public async Task<HttpResponseMessage> Send(HttpMethod method, string url, string json = "")
         {
             var client = CreateClient();
-
             var request = new HttpRequestMessage(method, url);
 
             if (method == HttpMethod.Post || method == HttpMethod.Put)
             {
-                if (!EqualityComparer<TI>.Default.Equals(body, default(TI)))
+                if (!string.IsNullOrWhiteSpace(json))
                 {
-                    request.Content = new StringContent(JsonConvert.SerializeObject(body), Encoding.UTF8, "application/json");
+                    request.Content = new StringContent(json, Encoding.UTF8, "application/json");
                 }
             }
 
             var response = await client.SendAsync(request);
-
-            if (!response.IsSuccessStatusCode)
-                return default(TO);
-
-            var json = await response.Content.ReadAsStringAsync();
-            var result = JsonConvert.DeserializeObject<TO>(json);
-
-            return result;
+            return response;
         }
 
         private HttpClient CreateClient()
@@ -72,6 +75,17 @@ namespace TailendersApi.Client
             client.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", _credentials.AuthenticationToken);
             client.DefaultRequestHeaders.Accept.Add(new System.Net.Http.Headers.MediaTypeWithQualityHeaderValue("application/json"));
             return client;
+        }
+
+        private async Task<T> GetResult<T>(HttpResponseMessage response)
+        {
+            if (!response.IsSuccessStatusCode)
+                return default(T);
+
+            var json = await response.Content.ReadAsStringAsync();
+            var result = JsonConvert.DeserializeObject<T>(json);
+
+            return result;
         }
     }
 }
