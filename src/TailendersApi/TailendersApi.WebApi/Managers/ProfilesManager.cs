@@ -19,7 +19,7 @@ namespace TailendersApi.WebApi.Managers
 
         Task<ProfileImage> UploadProfileImage(string profileId, byte[] image);
 
-        Task<IEnumerable<Profile>> SearchForProfiles(string profileId);
+        Task<IEnumerable<SearchProfile>> SearchForProfiles(string profileId);
     }
 
     public class ProfilesManager : IProfilesManager
@@ -46,7 +46,7 @@ namespace TailendersApi.WebApi.Managers
             if (profileEntity == null)
                 return null;
 
-            var contract = ProfileMapper.ToContract(profileEntity);
+            var contract = ProfileMapper.ToProfileContract(profileEntity);
             return contract;
         }
 
@@ -58,8 +58,8 @@ namespace TailendersApi.WebApi.Managers
 
         public async Task<Profile> UpdateProfile(Profile model)
         {
-            var entity = await _profilesRepository.UpsertProfile(ProfileMapper.ToEntity(model));
-            var contract = ProfileMapper.ToContract(entity);
+            var entity = await _profilesRepository.UpsertProfile(ProfileMapper.ToProfileEntity(model));
+            var contract = ProfileMapper.ToProfileContract(entity);
             return contract;
         }
 
@@ -87,7 +87,7 @@ namespace TailendersApi.WebApi.Managers
             return contract;
         }
 
-        public async Task<IEnumerable<Profile>> SearchForProfiles(string profileId)
+        public async Task<IEnumerable<SearchProfile>> SearchForProfiles(string profileId)
         {
             var profile = await GetProfile(profileId);
 
@@ -100,7 +100,7 @@ namespace TailendersApi.WebApi.Managers
                                                                             profile.SearchMaxAge,
                                                                             categories);
 
-            var profiles = searchResults.Select(ProfileMapper.ToContract);
+            var profiles = searchResults.Select(ProfileMapper.ToSearchProfileContract);
             return profiles;
         }
     }
