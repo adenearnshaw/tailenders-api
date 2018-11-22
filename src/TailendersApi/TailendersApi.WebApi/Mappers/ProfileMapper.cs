@@ -29,10 +29,13 @@ namespace TailendersApi.WebApi.Mappers
                 UpdatedAt = entity.UpdatedAt
             };
 
-            contract.Images = entity.ProfileImages
-                                    .Select(ProfileImageMapper.ToContract)
-                                    .ToList();
-
+            if (entity.ProfileImages != null)
+            {
+                contract.Images = entity.ProfileImages
+                                        .Select(ProfileImageMapper.ToContract)
+                                        .ToList();
+            }
+            
             return contract;
         };
 
@@ -72,9 +75,13 @@ namespace TailendersApi.WebApi.Mappers
                 FavouritePosition = entity.FavouritePosition,
             };
 
-            contract.Images = entity.ProfileImages
-                                    .Select(ProfileImageMapper.ToContract)
-                                    .ToList();
+            if (entity.ProfileImages != null)
+            {
+                contract.Images = entity.ProfileImages
+                                        .Select(ProfileImageMapper.ToContract)
+                                        .ToList();
+            }
+            
             return contract;
         };
     }
