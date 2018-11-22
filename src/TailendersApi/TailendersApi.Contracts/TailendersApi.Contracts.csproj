@@ -9,6 +9,7 @@
     <PackageId>TailendersApi.Contracts</PackageId>
     <NeutralLanguage>en-GB</NeutralLanguage>
     <Description>DTOs for Tailenders Api</Description>
+    <PackOnBuild>true</PackOnBuild>
   </PropertyGroup>
 
   <ItemGroup>
