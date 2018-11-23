@@ -2,7 +2,7 @@
 
   <PropertyGroup>
     <TargetFramework>netstandard1.0</TargetFramework>
-    <PackageVersion>0.0.1</PackageVersion>
+    <PackageVersion>0.0.2-alpha2</PackageVersion>
     <Authors>Aden Earnshaw</Authors>
     <Owners>Aden Earnshaw</Owners>
     <Title>TailendersApi.Contracts</Title>

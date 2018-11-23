@@ -6,7 +6,7 @@ namespace TailendersApi.Client
 {
     public interface IPairingsRetriever
     {
-        Task<IList<Profile>> SearchForProfiles();
+        Task<IList<SearchProfile>> SearchForProfiles();
     }
 
     public class PairingsRetriever : RetrieverBase, IPairingsRetriever
@@ -22,10 +22,10 @@ namespace TailendersApi.Client
             _credentials = credentials;
         }
 
-        public async Task<IList<Profile>> SearchForProfiles()
+        public async Task<IList<SearchProfile>> SearchForProfiles()
         {
             var url = string.Format(Pairings_Get_Url, _credentials.UserId);
-            var profiles = await Get<IList<Profile>>(url);
+            var profiles = await Get<IList<SearchProfile>>(url);
             return profiles;
         }
     }
