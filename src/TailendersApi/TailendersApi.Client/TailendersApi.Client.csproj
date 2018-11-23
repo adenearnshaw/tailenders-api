@@ -1,22 +1,19 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
     <PackageId>TailendersApi.Client</PackageId>
-    <PackageVersion>0.0.2-alpha2</PackageVersion>
-    <Authors>Aden Earnshaw</Authors>
-    <NeutralLanguage>en-GB</NeutralLanguage>
-    <Owners>Aden Earnshaw</Owners>
     <Title>TailendersApi.Client</Title>
-    <PackOnBuild>true</PackOnBuild>
     <Description>Client to communicate to TailendersApi</Description>
+    <PackageVersion>0.0.2-alpha5</PackageVersion>
+    <Authors>Aden Earnshaw</Authors>
+    <Owners>Aden Earnshaw</Owners>
+    <NeutralLanguage>en-GB</NeutralLanguage>
+    <PackOnBuild>true</PackOnBuild>
   </PropertyGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\TailendersApi.Contracts\TailendersApi.Contracts.csproj" />
   </ItemGroup>
-  
-  <ItemGroup>
-    <PackageReference Include="NuGet.Build.Packaging" Version="0.2.0" />
-  </ItemGroup>
+
 </Project>

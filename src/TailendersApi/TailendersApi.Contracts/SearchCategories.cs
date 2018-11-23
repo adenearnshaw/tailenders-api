@@ -1,15 +1,14 @@
-﻿using System;
-using System.ComponentModel;
+﻿using System.ComponentModel;
 
 namespace TailendersApi.Contracts
 {
     public enum SearchCategory
     {
-        [DisplayName("Men")]
+        [Description("Men")]
         Men = 0,
-        [DisplayName("Women")]
+        [Description("Women")]
         Women = 1,
-        [DisplayName("Both")]
+        [Description("Both")]
         Both = 2
     }
 }

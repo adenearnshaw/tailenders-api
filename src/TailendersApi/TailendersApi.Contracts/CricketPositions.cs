@@ -4,53 +4,53 @@ namespace TailendersApi.Contracts
 {
     public enum CricketPosition
     {
-        [DisplayName("Cover")]
+        [Description("Cover")]
         Cover = 1,
-        [DisplayName("Cow corner")]
+        [Description("Cow corner")]
         CowCorner = 2,
-        [DisplayName("Deep cover")]
+        [Description("Deep cover")]
         DeepCover = 3,
-        [DisplayName("Deep midwicket")]
+        [Description("Deep midwicket")]
         DeepMidwicket = 4,
-        [DisplayName("Deep point")]
+        [Description("Deep point")]
         DeepPoint = 5,
-        [DisplayName("Fine leg")]
+        [Description("Fine leg")]
         FineLeg = 6,
-        [DisplayName("Gully")]
+        [Description("Gully")]
         Gully = 7, 
-        [DisplayName("Keeper")]
+        [Description("Keeper")]
         Keeper = 8, 
-        [DisplayName("Long leg")]
+        [Description("Long leg")]
         LongLeg = 9,
-        [DisplayName("Long off")]
+        [Description("Long off")]
         LongOff = 10,
-        [DisplayName("Long on")]
+        [Description("Long on")]
         LongOn = 11,
-        [DisplayName("Long stop")]
+        [Description("Long stop")]
         LongStop = 12,
-        [DisplayName("Mid off")]
+        [Description("Mid off")]
         MidOff = 13,
-        [DisplayName("Mid on")]
+        [Description("Mid on")]
         MidOn  = 14,
-        [DisplayName("Midwicket")]
+        [Description("Midwicket")]
         Midwicket = 15,
-        [DisplayName("Point")]
+        [Description("Point")]
         Point = 16,
-        [DisplayName("Short leg")]
+        [Description("Short leg")]
         ShortLeg = 17,
-        [DisplayName("Silly mid off")]
+        [Description("Silly mid off")]
         SillyMidOff = 18,
-        [DisplayName("Silly mid on")]
+        [Description("Silly mid on")]
         SillyMidOn = 19,
-        [DisplayName("Silly point")]
+        [Description("Silly point")]
         SillyPoint = 20,
-        [DisplayName("Slips")]
+        [Description("Slips")]
         Slips = 21,
-        [DisplayName("Square leg")]
+        [Description("Square leg")]
         SquareLeg = 22,
-        [DisplayName("Straight hit")]
+        [Description("Straight hit")]
         StraightHit = 23,
-        [DisplayName("Third man")]
+        [Description("Third man")]
         ThirdMan = 24
     }
 }

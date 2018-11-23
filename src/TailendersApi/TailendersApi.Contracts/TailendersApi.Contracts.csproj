@@ -1,20 +1,19 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>netstandard1.0</TargetFramework>
-    <PackageVersion>0.0.2-alpha2</PackageVersion>
+    <TargetFramework>netstandard2.0</TargetFramework>
+    <PackageId>TailendersApi.Contracts</PackageId>
+    <Title>TailendersApi.Contracts</Title>
+    <Description>DTOs for Tailenders Api</Description>
+    <PackageVersion>0.0.2-alpha4</PackageVersion>
     <Authors>Aden Earnshaw</Authors>
     <Owners>Aden Earnshaw</Owners>
-    <Title>TailendersApi.Contracts</Title>
-    <PackageId>TailendersApi.Contracts</PackageId>
     <NeutralLanguage>en-GB</NeutralLanguage>
-    <Description>DTOs for Tailenders Api</Description>
     <PackOnBuild>true</PackOnBuild>
   </PropertyGroup>
 
   <ItemGroup>
     <PackageReference Include="Newtonsoft.Json" Version="11.0.2" />
-    <PackageReference Include="NuGet.Build.Packaging" Version="0.2.0" />
   </ItemGroup>
 
 </Project>
