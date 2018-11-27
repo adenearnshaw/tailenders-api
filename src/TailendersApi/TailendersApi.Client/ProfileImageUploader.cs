@@ -1,7 +1,8 @@
-﻿using System.IO;
+﻿using Newtonsoft.Json;
+using System;
+using System.IO;
 using System.Net.Http;
 using System.Threading.Tasks;
-using Newtonsoft.Json;
 using TailendersApi.Client.Exceptions;
 using TailendersApi.Contracts;
 
@@ -14,15 +15,15 @@ namespace TailendersApi.Client
 
     public class ProfileImageUploader : IProfileImageUploader
     {
-        private const string ImageUpdloadUrlFormat = "{0}/api/profiles/{1}/image";
+        private const string ImageUpdloadUrlFormat = "/api/profiles/{0}/image";
 
-        private readonly IClientSettings _settings;
+        private readonly IClientSettings _clientSettings;
         private readonly ICredentialsProvider _credentials;
 
         public ProfileImageUploader(IClientSettings settings,
                                     ICredentialsProvider credentialsProvider)
         {
-            _settings = settings;
+            _clientSettings = settings;
             _credentials = credentialsProvider;
         }
 
@@ -33,7 +34,7 @@ namespace TailendersApi.Client
         /// <param name="image">Image stream (format must be jpeg)</param>
         public async Task<ProfileImage> UploadImage(Stream image)
         {
-            var url = string.Format(ImageUpdloadUrlFormat, _settings.BaseUrl, _credentials.UserId);
+            var url = string.Format(ImageUpdloadUrlFormat, _credentials.UserId);
 
             var fileStreamContent = new StreamContent(image);
             fileStreamContent.Headers.ContentDisposition = new System.Net.Http.Headers.ContentDispositionHeaderValue("form-data")
@@ -43,7 +44,7 @@ namespace TailendersApi.Client
             };
             fileStreamContent.Headers.ContentType = new System.Net.Http.Headers.MediaTypeHeaderValue("application/octet-stream");
 
-            using (var client = new HttpClient())
+            using (var client = CreateClient())
             using (var formData = new MultipartFormDataContent())
             {
                 formData.Add(fileStreamContent);
@@ -57,6 +58,17 @@ namespace TailendersApi.Client
                 var profileImage = JsonConvert.DeserializeObject<ProfileImage>(json);
                 return profileImage;
             }
+        }
+
+        private HttpClient CreateClient()
+        {
+            var client = new HttpClient
+            {
+                BaseAddress = new Uri(_clientSettings.BaseUrl)
+            };
+            client.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", _credentials.AuthenticationToken);
+            client.DefaultRequestHeaders.Accept.Add(new System.Net.Http.Headers.MediaTypeWithQualityHeaderValue("application/json"));
+            return client;
         }
     }
 }

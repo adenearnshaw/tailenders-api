@@ -1,9 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using Newtonsoft.Json;
+using System;
 using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
-using Newtonsoft.Json;
 
 namespace TailendersApi.Client
 {
@@ -25,7 +24,7 @@ namespace TailendersApi.Client
             return result;
         }
 
-        public async Task<TO> Post<TI,TO>(string url, TI body)
+        public async Task<TO> Post<TI, TO>(string url, TI body)
         {
             var json = JsonConvert.SerializeObject(body);
 
@@ -34,7 +33,7 @@ namespace TailendersApi.Client
             return result;
         }
 
-        public async Task<TO> Put<TI,TO>(string url, TI body)
+        public async Task<TO> Put<TI, TO>(string url, TI body)
         {
             var json = JsonConvert.SerializeObject(body);
 
