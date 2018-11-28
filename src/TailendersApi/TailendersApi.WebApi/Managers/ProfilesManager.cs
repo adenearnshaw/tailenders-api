@@ -17,7 +17,7 @@ namespace TailendersApi.WebApi.Managers
         Task<Profile> UpdateProfile(Profile model);
         Task DeleteProfile(string userId);
 
-        Task<ProfileImage> UploadProfileImage(string profileId, byte[] image);
+        Task<ProfileImage> UploadProfileImage(string profileId, string fileName, byte[] image);
 
         Task<IEnumerable<SearchProfile>> SearchForProfiles(string profileId);
     }
@@ -69,9 +69,8 @@ namespace TailendersApi.WebApi.Managers
             await _profilesRepository.DeleteProfile(profileId);
         }
 
-        public async Task<ProfileImage> UploadProfileImage(string profileId, byte[] image)
+        public async Task<ProfileImage> UploadProfileImage(string profileId, string fileName, byte[] image)
         {
-            var fileName = $"{Guid.NewGuid()}.jpg";
             var blobUrl = await _imageStorageService.StoreImage(fileName, image);
 
             var entity = new ProfileImageEntity

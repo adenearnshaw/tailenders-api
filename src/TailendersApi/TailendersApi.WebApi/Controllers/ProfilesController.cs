@@ -1,4 +1,5 @@
-﻿using System.IO;
+﻿using System;
+using System.IO;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
@@ -131,7 +132,14 @@ namespace TailendersApi.WebApi.Controllers
             using (var ms = new MemoryStream())
             {
                 await file.CopyToAsync(ms);
-                savedImage = await _profilesManager.UploadProfileImage(id, ms.ToArray());
+                try
+                {
+                    savedImage = await _profilesManager.UploadProfileImage(id, file.FileName, ms.ToArray());
+                }
+                catch(Exception ex)
+                {
+                    throw; 
+                }
             }
             return Ok(savedImage);
         }

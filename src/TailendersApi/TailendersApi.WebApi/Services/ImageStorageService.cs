@@ -2,6 +2,7 @@
 using System.IO;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Configuration;
+using Microsoft.WindowsAzure.Storage;
 using Microsoft.WindowsAzure.Storage.Auth;
 using Microsoft.WindowsAzure.Storage.Blob;
 
@@ -27,7 +28,11 @@ namespace TailendersApi.WebApi.Services
 
             var url = string.Concat(_config["AzureBlobStorage:StorageUrl"], fileNameOnly);
             var creds = new StorageCredentials(_config["AzureBlobStorage:Account"], _config["AzureBlobStorage:Key"]);
-            var blob = new CloudBlockBlob(new Uri(url), creds);
+            var account = new CloudStorageAccount(creds, true);
+            var blobClient = account.CreateCloudBlobClient();
+            var container = blobClient.GetContainerReference(_config["AzureBlobStorage:ProfileImagesContainer"]);
+
+            var blob = container.GetBlockBlobReference(fileNameOnly);
 
             if (await ShouldUpload(blob, image.Length))
             {

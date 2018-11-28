@@ -10,7 +10,7 @@ namespace TailendersApi.Client
 {
     public interface IProfileImageUploader
     {
-        Task<ProfileImage> UploadImage(Stream image);
+        Task<ProfileImage> UploadImage(string fileName, Stream image);
     }
 
     public class ProfileImageUploader : IProfileImageUploader
@@ -32,15 +32,15 @@ namespace TailendersApi.Client
         /// </summary>
         /// <returns>Success state of upload</returns>
         /// <param name="image">Image stream (format must be jpeg)</param>
-        public async Task<ProfileImage> UploadImage(Stream image)
+        public async Task<ProfileImage> UploadImage(string fileName, Stream image)
         {
             var url = string.Format(ImageUpdloadUrlFormat, _credentials.UserId);
 
             var fileStreamContent = new StreamContent(image);
             fileStreamContent.Headers.ContentDisposition = new System.Net.Http.Headers.ContentDispositionHeaderValue("form-data")
             {
-                Name = "file",
-                FileName = "profile_image.jpg"
+                Name = fileName,
+                FileName = fileName
             };
             fileStreamContent.Headers.ContentType = new System.Net.Http.Headers.MediaTypeHeaderValue("application/octet-stream");
 
@@ -67,7 +67,6 @@ namespace TailendersApi.Client
                 BaseAddress = new Uri(_clientSettings.BaseUrl)
             };
             client.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", _credentials.AuthenticationToken);
-            client.DefaultRequestHeaders.Accept.Add(new System.Net.Http.Headers.MediaTypeWithQualityHeaderValue("application/json"));
             return client;
         }
     }
