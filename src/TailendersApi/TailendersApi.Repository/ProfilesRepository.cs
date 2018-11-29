@@ -27,7 +27,8 @@ namespace TailendersApi.Repository
 
         public async Task<ProfileEntity> GetProfile(string profileId)
         {
-            var result = await _db.FindAsync<ProfileEntity>(profileId);
+            var result = await _db.Profiles.Include(pr => pr.ProfileImages)
+                                           .FirstOrDefaultAsync<ProfileEntity>(pr => pr.Id == profileId);
             return result;
         }
 
