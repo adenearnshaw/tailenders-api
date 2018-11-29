@@ -11,7 +11,7 @@ namespace TailendersApi.WebApi.Mappers
         {
             var contract = new Profile
             {
-                Id = entity.ID,
+                Id = entity.Id,
                 Name = entity.Name,
                 Age = entity.Age,
                 ShowAge = entity.ShowAge,
@@ -19,6 +19,7 @@ namespace TailendersApi.WebApi.Mappers
                 Latitude = entity.Latitude,
                 Longitude = entity.Longitude,
                 Bio = entity.Bio,
+                ContactDetails = entity.ContactDetails,
                 FavouritePosition = entity.FavouritePosition,
                 SearchShowInCategory = entity.SearchShowInCategory,
                 SearchForCategory = entity.SearchForCategory,
@@ -43,7 +44,7 @@ namespace TailendersApi.WebApi.Mappers
         {
             var entity = new ProfileEntity
             {
-                ID = contract.Id,
+                Id = contract.Id,
                 Name = contract.Name,
                 Age = contract.Age,
                 ShowAge = contract.ShowAge,
@@ -51,6 +52,7 @@ namespace TailendersApi.WebApi.Mappers
                 Latitude = contract.Latitude,
                 Longitude = contract.Longitude,
                 Bio = contract.Bio,
+                ContactDetails = contract.ContactDetails,
                 FavouritePosition = contract.FavouritePosition,
                 SearchShowInCategory = contract.SearchShowInCategory,
                 SearchForCategory = contract.SearchForCategory,
@@ -67,7 +69,7 @@ namespace TailendersApi.WebApi.Mappers
         {
             var contract = new SearchProfile
             {
-                Id = entity.ID,
+                Id = entity.Id,
                 Name = entity.Name,
                 Age = entity.ShowAge ? entity.Age : 0,
                 Location = entity.Location,

@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using TailendersApi.Repository;
 
 namespace TailendersApi.Repository.Migrations
 {
     [DbContext(typeof(TailendersContext))]
-    partial class TailendersContextModelSnapshot : ModelSnapshot
+    [Migration("20181129204301_Updating_FK_Relationships")]
+    partial class Updating_FK_Relationships
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

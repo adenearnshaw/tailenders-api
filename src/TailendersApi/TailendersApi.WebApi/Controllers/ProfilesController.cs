@@ -123,7 +123,7 @@ namespace TailendersApi.WebApi.Controllers
                 return Forbid();
             }
 
-            if (file.Length == 0)
+            if (file == null || file.Length == 0)
             {
                 return NoContent();
             }

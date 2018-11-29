@@ -39,7 +39,7 @@ namespace TailendersApi.Client
             var fileStreamContent = new StreamContent(image);
             fileStreamContent.Headers.ContentDisposition = new System.Net.Http.Headers.ContentDispositionHeaderValue("form-data")
             {
-                Name = fileName,
+                Name = "file",
                 FileName = fileName
             };
             fileStreamContent.Headers.ContentType = new System.Net.Http.Headers.MediaTypeHeaderValue("application/octet-stream");

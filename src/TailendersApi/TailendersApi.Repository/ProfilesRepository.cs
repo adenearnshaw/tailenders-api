@@ -33,7 +33,7 @@ namespace TailendersApi.Repository
 
         public async Task<ProfileEntity> UpsertProfile(ProfileEntity entity)
         {
-            var profile = await GetProfile(entity.ID);
+            var profile = await GetProfile(entity.Id);
 
             if (profile == null)
             {

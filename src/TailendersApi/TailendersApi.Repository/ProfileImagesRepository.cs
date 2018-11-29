@@ -27,7 +27,7 @@ namespace TailendersApi.Repository
 
         public async Task<ProfileImageEntity> UpsertImage(ProfileImageEntity entity)
         {
-            var image = await GetImage(entity.ID);
+            var image = await GetImage(entity.Id);
 
             if (image == null)
             {

@@ -5,7 +5,7 @@ namespace TailendersApi.Repository.Entities
 {
     public class ProfileEntity
     {
-        public string ID { get; set; }
+        public string Id { get; set; }
         public string Name { get; set; }
         public int Age { get; set; }
         public bool ShowAge { get; set; }
@@ -14,6 +14,8 @@ namespace TailendersApi.Repository.Entities
         public double Longitude { get; set; }
         public string Bio { get; set; }
         public int FavouritePosition { get; set; }
+        
+        public string ContactDetails { get; set; }
 
         public int SearchShowInCategory { get; set; }
         public int SearchForCategory { get; set; }
@@ -24,7 +26,7 @@ namespace TailendersApi.Repository.Entities
         public DateTime CreatedAt { get; set; }
         public DateTime UpdatedAt { get; set; }
 
-        public virtual ICollection<PairingEntity> Pairings { get; set; }
-        public virtual ICollection<ProfileImageEntity> ProfileImages { get; set; }
+        public List<PairingEntity> Pairings { get; set; }
+        public List<ProfileImageEntity> ProfileImages { get; set; }
     }
 }

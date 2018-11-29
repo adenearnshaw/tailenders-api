@@ -30,6 +30,8 @@ namespace TailendersApi.Contracts
         public string Bio { get; set; }
         [JsonProperty("favourite_position")]
         public int FavouritePosition { get; set; }
+        [JsonProperty("contact_details")]
+        public string ContactDetails { get; set; }
 
         [JsonProperty("search_show_in_category")]
         public int SearchShowInCategory { get; set; }

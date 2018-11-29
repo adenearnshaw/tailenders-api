@@ -29,7 +29,7 @@ namespace TailendersApi.Repository
 
         public async Task<PairingEntity> UpsertPairingData(PairingEntity entity)
         {
-            var pairing = (await _db.FindAsync<ICollection<PairingEntity>>(entity.ID)).FirstOrDefault();
+            var pairing = (await _db.FindAsync<ICollection<PairingEntity>>(entity.Id)).FirstOrDefault();
 
             if (pairing == null)
             {

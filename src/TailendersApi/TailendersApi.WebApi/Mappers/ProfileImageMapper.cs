@@ -10,7 +10,7 @@ namespace TailendersApi.WebApi.Mappers
         {
             var contract = new ProfileImage
             {
-                Id = entity.ID,
+                Id = entity.Id,
                 ImageUrl = entity.ImageUrl,
                 UpdatedAt = entity.LastUpdated
             };
@@ -21,7 +21,7 @@ namespace TailendersApi.WebApi.Mappers
         {
             var entity = new ProfileImageEntity
             {
-                ID = contract.Id,
+                Id = contract.Id,
                 ProfileId = profileId,
                 ImageUrl = contract.ImageUrl,
                 LastUpdated = contract.UpdatedAt
