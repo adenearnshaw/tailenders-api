@@ -132,14 +132,7 @@ namespace TailendersApi.WebApi.Controllers
             using (var ms = new MemoryStream())
             {
                 await file.CopyToAsync(ms);
-                try
-                {
-                    savedImage = await _profilesManager.UploadProfileImage(id, file.FileName, ms.ToArray());
-                }
-                catch(Exception ex)
-                {
-                    throw; 
-                }
+                savedImage = await _profilesManager.UploadProfileImage(id, file.FileName, ms.ToArray());
             }
             return Ok(savedImage);
         }

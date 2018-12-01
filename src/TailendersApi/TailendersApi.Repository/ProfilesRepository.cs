@@ -3,6 +3,7 @@ using System.Data.SqlClient;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
+using TailendersApi.Contracts;
 using TailendersApi.Repository.Entities;
 
 namespace TailendersApi.Repository
@@ -62,25 +63,50 @@ namespace TailendersApi.Repository
 
         public async Task<List<ProfileEntity>> SearchForProfiles(string profileId, int minAge, int maxAge, int[] categories)
         {
-            return await Task.Run(() =>
+            var profile = await GetProfile(profileId);
+
+            var searchQuery = _db.Profiles.Where(p => p.Age >= minAge
+                                                   && p.Age <= maxAge);
+
+            var searchQueryWithPreference = CalculateSearchProfilePredicate(searchQuery, 
+                                                                            (Gender) profile.Gender,
+                                                                            (SearchCategory) profile.SearchForCategory);
+
+            var results = await searchQueryWithPreference.ToListAsync();
+
+            return results;
+        }
+
+        private IQueryable<ProfileEntity> CalculateSearchProfilePredicate(IQueryable<ProfileEntity> query, Gender gender, SearchCategory searchFor)
+        {
+            if (gender == Gender.Male && searchFor == SearchCategory.Women) //Hetro male
             {
-                var searchProcName = "SearchForProfiles";
-                var take = 20;
+                query = query.Where(p => p.Gender == 1 && p.SearchForCategory == 0);
+            }
+            else if (gender == Gender.Male && searchFor == SearchCategory.Men) //Homo male
+            {
+                query = query.Where(p => p.Gender == 0 && p.SearchForCategory == 0);
+            }
+            else if (gender == Gender.Male && searchFor == SearchCategory.Both) //Bi male
+            {
+                query = query.Where(p => (p.Gender == 1 && p.SearchForCategory == 0) ||
+                                         (p.Gender == 0 && p.SearchForCategory == 0));
+            }
+            else if(gender == Gender.Female && searchFor == SearchCategory.Men) //Hetro female
+            {
+                query = query.Where(p => p.Gender == 0 && p.SearchForCategory == 1);
+            }
+            else if (gender == Gender.Female && searchFor == SearchCategory.Women) //Homo female
+            {
+                query = query.Where(p => p.Gender == 1 && p.SearchForCategory == 1);
+            }
+            else if (gender == Gender.Female && searchFor == SearchCategory.Both) //Bi female
+            {
+                query = query.Where(p => (p.Gender == 0 && p.SearchForCategory == 1) ||
+                                         (p.Gender == 1 && p.SearchForCategory == 1));
+            }
 
-                var userIdParam = new SqlParameter("@userId", profileId);
-                var takeParam = new SqlParameter("@take", take);
-                var minAgeParam = new SqlParameter("@minAge", minAge);
-                var maxAgeParam = new SqlParameter("@maxAge", maxAge);
-                var categoriesParam = new SqlParameter("@categories", string.Join(',', categories));
-
-                var results = _db.Profiles.FromSql($"{searchProcName} @p0, @p1, @p2, @p3, @p4",
-                                                   userIdParam,
-                                                   takeParam,
-                                                   minAgeParam,
-                                                   maxAgeParam,
-                                                   categoriesParam);
-                return results.ToList();
-            });
+            return query;
         }
     }
 }

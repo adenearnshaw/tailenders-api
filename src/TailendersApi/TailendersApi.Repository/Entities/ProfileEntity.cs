@@ -14,10 +14,9 @@ namespace TailendersApi.Repository.Entities
         public double Longitude { get; set; }
         public string Bio { get; set; }
         public int FavouritePosition { get; set; }
-        
+        public int Gender { get; set; }
         public string ContactDetails { get; set; }
 
-        public int SearchShowInCategory { get; set; }
         public int SearchForCategory { get; set; }
         public int SearchRadius { get; set; }
         public int SearchMinAge { get; set; }

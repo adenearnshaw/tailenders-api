@@ -13,4 +13,8 @@
   <ItemGroup>
     <Compile Remove="Entities\TableNames.cs" />
   </ItemGroup>
+ 
+  <ItemGroup>
+    <ProjectReference Include="..\TailendersApi.Contracts\TailendersApi.Contracts.csproj" />
+  </ItemGroup>
 </Project>

@@ -5,7 +5,7 @@
     <PackageId>TailendersApi.Contracts</PackageId>
     <Title>TailendersApi.Contracts</Title>
     <Description>DTOs for Tailenders Api</Description>
-    <PackageVersion>0.0.2-alpha5</PackageVersion>
+    <PackageVersion>0.0.2-alpha6</PackageVersion>
     <Authors>Aden Earnshaw</Authors>
     <Owners>Aden Earnshaw</Owners>
     <NeutralLanguage>en-GB</NeutralLanguage>
