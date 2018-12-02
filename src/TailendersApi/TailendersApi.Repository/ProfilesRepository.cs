@@ -65,7 +65,8 @@ namespace TailendersApi.Repository
         {
             var profile = await GetProfile(profileId);
 
-            var searchQuery = _db.Profiles.Where(p => p.Age >= minAge
+            var searchQuery = _db.Profiles.Include(pr => pr.ProfileImages)
+                                          .Where(p => p.Age >= minAge
                                                    && p.Age <= maxAge);
 
             var searchQueryWithPreference = CalculateSearchProfilePredicate(searchQuery, 
