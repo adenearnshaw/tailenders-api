@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore;
 using TailendersApi.Repository.Entities;
 
 namespace TailendersApi.Repository
@@ -8,7 +9,9 @@ namespace TailendersApi.Repository
     public interface IPairingsRepository
     {
         Task<IEnumerable<PairingEntity>> GetPairingsForUser(string profileId);
+        Task<PairingEntity> GetPairing(string profileId, string pairedProfileId);
         Task<PairingEntity> UpsertPairingData(PairingEntity entity);
+        Task<bool> CheckIfMatch(string profileId, string pairedProfileId);
         Task DeletePairings(string profileId);
     }
 
@@ -25,6 +28,27 @@ namespace TailendersApi.Repository
         {
             var results = await _db.FindAsync<ICollection<PairingEntity>>(profileId);
             return results;
+        }
+
+        public async Task<PairingEntity> GetPairing(string profileId, string pairedProfileId)
+        {
+            var results =
+                await _db.Pairings.Where(pa => pa.ProfileId == profileId && pa.PairedProfileId == pairedProfileId).ToListAsync();
+            return results.FirstOrDefault();
+        }
+
+        public async Task<bool> CheckIfMatch(string profileId, string pairedProfileId)
+        {
+            var results = await _db.Pairings.Where(pa => (pa.ProfileId == profileId && pa.PairedProfileId == pairedProfileId) ||
+                                                   (pa.ProfileId == pairedProfileId && pa.PairedProfileId == profileId))
+                                            .ToListAsync();
+
+            if (results.Count >= 2)
+            {
+                return results.All(pa => pa.IsLiked);
+            }
+
+            return false;
         }
 
         public async Task<PairingEntity> UpsertPairingData(PairingEntity entity)
