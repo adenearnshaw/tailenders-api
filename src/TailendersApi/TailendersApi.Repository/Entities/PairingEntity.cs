@@ -10,7 +10,6 @@ namespace TailendersApi.Repository.Entities
         public bool IsLiked { get; set; }
         public bool IsBlocked { get; set; }
         public DateTime LastUpdated { get; set; }
-        public bool ShowContactDetails { get; set; }
 
         public ProfileEntity Profile { get; set; }
         

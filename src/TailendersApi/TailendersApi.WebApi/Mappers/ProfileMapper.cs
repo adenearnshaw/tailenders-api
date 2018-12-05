@@ -86,5 +86,31 @@ namespace TailendersApi.WebApi.Mappers
             
             return contract;
         };
+
+        public static Func<ProfileEntity, bool, MatchedProfile> ToMatchedProfileContract = (entity, mapContactDetails) =>
+        {
+            var contract = new MatchedProfile
+            {
+                Id = entity.Id,
+                Name = entity.Name,
+                Age = entity.ShowAge ? entity.Age : 0,
+                Location = entity.Location,
+                Bio = entity.Bio,
+                FavouritePosition = entity.FavouritePosition,
+            };
+
+            if (entity.ProfileImages != null)
+            {
+                contract.Images = entity.ProfileImages
+                    .Select(ProfileImageMapper.ToContract)
+                    .ToList();
+            }
+
+            contract.ContactDetails = mapContactDetails
+                ? entity.ContactDetails
+                : String.Empty;
+
+            return contract;
+        };
     }
 }

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using TailendersApi.Contracts;
 using TailendersApi.Repository;
@@ -14,6 +15,14 @@ namespace TailendersApi.WebApi.Managers
     public class PairingsManager : IPairingsManager
     {
         private readonly IPairingsRepository _pairingsRepository;
+        private readonly IMatchesRepository _matchesRepository;
+
+        public PairingsManager(IPairingsRepository pairingsRepository,
+                               IMatchesRepository matchesRepository)
+        {
+            _pairingsRepository = pairingsRepository;
+            _matchesRepository = matchesRepository;
+        }
 
         public async Task<MatchResult> SetPairingDescision(string profileId, string pairedProfileId, PairingDecision decision)
         {
@@ -39,6 +48,26 @@ namespace TailendersApi.WebApi.Managers
             }
 
             var isMatch = await _pairingsRepository.CheckIfMatch(profileId, pairedProfileId);
+            if (isMatch)
+            {
+                var matchGuid = Guid.NewGuid().ToString();
+                var match = new MatchEntity
+                {
+                    Id = matchGuid,
+                    MatchedAt = DateTime.UtcNow,
+                    ProfileMatches = new List<ProfileMatchEntity>
+                    {
+                        new ProfileMatchEntity { ProfileId = profileId, MatchId = matchGuid },
+                        new ProfileMatchEntity { ProfileId = pairedProfileId, MatchId = matchGuid }
+                    },
+                    MatchContactPreferences = new List<MatchContactPreferenceEntity>
+                    {
+                        new MatchContactPreferenceEntity { Id = Guid.NewGuid().ToString(), MatchId = matchGuid, ProfileId = profileId },
+                        new MatchContactPreferenceEntity { Id = Guid.NewGuid().ToString(), MatchId = matchGuid, ProfileId = pairedProfileId }
+                    }
+                };
+                await _matchesRepository.UpsertMatch(match);
+            }
 
             var matchResult = new MatchResult
             {

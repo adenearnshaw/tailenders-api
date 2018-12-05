@@ -16,15 +16,18 @@ namespace TailendersApi.WebApi.Controllers
     public class ProfilesController : BaseController
     {
         private readonly IProfilesManager _profilesManager;
+        private readonly IMatchesManager _matchesManager;
 
-        public ProfilesController(IProfilesManager profilesManager)
+        public ProfilesController(IProfilesManager profilesManager,
+                                  IMatchesManager matchesManager)
         {
             _profilesManager = profilesManager;
+            _matchesManager = matchesManager;
         }
 
-        // GET api/profiles/me
-        [HttpGet("me")]
-        public async Task<IActionResult> Get()
+        // GET api/profiles/d12cc0c1-c531-4e15-95a8-2093b951597d
+        [HttpGet("{id}")]
+        public async Task<IActionResult> Get(string id)
         {
             var hasScope = User.HasRequiredScopes(ReadPermission);
             if (!hasScope)
@@ -33,7 +36,7 @@ namespace TailendersApi.WebApi.Controllers
             }
 
             var owner = User.CheckClaimMatch(ObjectIdElement);
-            if (string.IsNullOrEmpty(owner))
+            if (!owner.Equals(id))
             {
                 return BadRequest(
                     $"Unable to match claim '{ObjectIdElement}' against user claims; click the 'claims' tab to double-check.");
@@ -55,7 +58,7 @@ namespace TailendersApi.WebApi.Controllers
             }
 
             var owner = User.CheckClaimMatch(ObjectIdElement);
-            if (owner != model.Id)
+            if (!owner.Equals(model.Id))
             {
                 return Forbid();
             }
@@ -76,7 +79,7 @@ namespace TailendersApi.WebApi.Controllers
             }
 
             var owner = User.CheckClaimMatch(ObjectIdElement);
-            if (owner != model.Id)
+            if (!owner.Equals(model.Id))
             {
                 return Forbid();
             }
@@ -97,7 +100,7 @@ namespace TailendersApi.WebApi.Controllers
             }
 
             var owner = User.CheckClaimMatch(ObjectIdElement);
-            if (owner != id)
+            if (!owner.Equals(id))
             {
                 return Forbid();
             }
@@ -135,6 +138,27 @@ namespace TailendersApi.WebApi.Controllers
                 savedImage = await _profilesManager.UploadProfileImage(id, file.FileName, ms.ToArray());
             }
             return Ok(savedImage);
+        }
+
+        // GET api/profiles/d12cc0c1-c531-4e15-95a8-2093b951597d/matches
+        [HttpGet("{id}/matches")]
+        public async Task<IActionResult> GetMatches(string id)
+        {
+            var hasScope = User.HasRequiredScopes(ReadPermission);
+            if (!hasScope)
+            {
+                return Unauthorized();
+            }
+
+            var owner = User.CheckClaimMatch(ObjectIdElement);
+            if (!owner.Equals(id))
+            {
+                return Forbid();
+            }
+
+            var matches = await _matchesManager.GetProfileMatches(id);
+
+            return Ok(matches);
         }
     }
 }

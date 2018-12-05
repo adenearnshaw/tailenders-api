@@ -4,7 +4,7 @@ using Newtonsoft.Json;
 
 namespace TailendersApi.Contracts
 {
-    public class Profile
+    public class Profile : IBasicProfile
     {
         public Profile()
         {

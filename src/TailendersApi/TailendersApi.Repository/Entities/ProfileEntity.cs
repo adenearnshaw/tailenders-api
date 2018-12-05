@@ -27,5 +27,7 @@ namespace TailendersApi.Repository.Entities
 
         public List<PairingEntity> Pairings { get; set; }
         public List<ProfileImageEntity> ProfileImages { get; set; }
+        public List<ProfileMatchEntity> ProfileMatches { get; set; }
+        public List<MatchContactPreferenceEntity> MatchContactPreferences { get; set; }
     }
 }

@@ -3,7 +3,7 @@ using Newtonsoft.Json;
 
 namespace TailendersApi.Contracts
 {
-    public class SearchProfile
+    public class SearchProfile : IBasicProfile
     {
         [JsonProperty("profile_id")]
         public string Id { get; set; }

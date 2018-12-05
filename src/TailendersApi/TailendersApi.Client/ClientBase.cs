@@ -6,15 +6,15 @@ using System.Threading.Tasks;
 
 namespace TailendersApi.Client
 {
-    public class RetrieverBase
+    public class ClientBase
     {
-        private readonly IClientSettings _clientSettings;
-        private readonly ICredentialsProvider _credentials;
+        protected readonly IClientSettings ClientSettings;
+        protected readonly ICredentialsProvider Credentials;
 
-        public RetrieverBase(IClientSettings clientSettings, ICredentialsProvider credentialsProvider)
+        public ClientBase(IClientSettings clientSettings, ICredentialsProvider credentialsProvider)
         {
-            _clientSettings = clientSettings;
-            _credentials = credentialsProvider;
+            ClientSettings = clientSettings;
+            Credentials = credentialsProvider;
         }
 
         public async Task<T> Get<T>(string url)
@@ -69,9 +69,9 @@ namespace TailendersApi.Client
         {
             var client = new HttpClient
             {
-                BaseAddress = new Uri(_clientSettings.BaseUrl)
+                BaseAddress = new Uri(ClientSettings.BaseUrl)
             };
-            client.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", _credentials.AuthenticationToken);
+            client.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", Credentials.AuthenticationToken);
             client.DefaultRequestHeaders.Accept.Add(new System.Net.Http.Headers.MediaTypeWithQualityHeaderValue("application/json"));
             return client;
         }

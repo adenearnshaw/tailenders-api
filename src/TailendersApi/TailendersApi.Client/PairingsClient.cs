@@ -4,36 +4,33 @@ using TailendersApi.Contracts;
 
 namespace TailendersApi.Client
 {
-    public interface IPairingsRetriever
+    public interface IPairingsClient
     {
         Task<IList<SearchProfile>> SearchForProfiles();
         Task<MatchResult> SendPairDecision(string pairedProfileId, PairingDecision decision);
     }
 
-    public class PairingsRetriever : RetrieverBase, IPairingsRetriever
+    public class PairingsClient : ClientBase, IPairingsClient
     {
         private const string Pairings_Get_Url = "/api/pairings/{0}";
         private const string Pairings_PostDecision_Url = "/api/pairings/{0}";
 
-        private readonly ICredentialsProvider _credentials;
-
-        public PairingsRetriever(IClientSettings settings, 
+        public PairingsClient(IClientSettings settings, 
                                  ICredentialsProvider credentials)
             : base(settings, credentials)
         {
-            _credentials = credentials;
         }
 
         public async Task<IList<SearchProfile>> SearchForProfiles()
         {
-            var url = string.Format(Pairings_Get_Url, _credentials.UserId);
+            var url = string.Format(Pairings_Get_Url, Credentials.UserId);
             var profiles = await Get<IList<SearchProfile>>(url);
             return profiles;
         }
 
         public async Task<MatchResult> SendPairDecision(string pairedProfileId, PairingDecision decision)
         {
-            var url = string.Format(Pairings_PostDecision_Url, _credentials.UserId);
+            var url = string.Format(Pairings_PostDecision_Url, Credentials.UserId);
             var data = new 
             {
                 pairProfileId = pairedProfileId, 

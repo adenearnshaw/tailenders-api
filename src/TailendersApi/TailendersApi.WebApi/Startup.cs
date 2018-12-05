@@ -41,9 +41,13 @@ namespace TailendersApi.WebApi
             var conn = Configuration["AzureDbConnection"];
             services.AddDbContext<TailendersContext>(opts => opts.UseSqlServer(conn));
 
+            services.AddScoped<IMatchesRepository, MatchesRepository>();
             services.AddScoped<IPairingsRepository, PairingsRepository>();
             services.AddScoped<IProfileImagesRepository, ProfileImagesRepository>();
             services.AddScoped<IProfilesRepository, ProfilesRepository>();
+
+            services.AddScoped<IMatchesManager, MatchesManager>();
+            services.AddScoped<IPairingsManager, PairingsManager>();
             services.AddScoped<IProfilesManager, ProfilesManager>();
             services.AddTransient<IImageStorageService, ImageStorageService>();
         }
