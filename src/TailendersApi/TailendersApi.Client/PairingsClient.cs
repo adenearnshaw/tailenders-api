@@ -13,7 +13,7 @@ namespace TailendersApi.Client
     public class PairingsClient : ClientBase, IPairingsClient
     {
         private const string Pairings_Get_Url = "/api/pairings/{0}";
-        private const string Pairings_PostDecision_Url = "/api/pairings/{0}";
+        private const string Pairings_PostDecision_Url = "/api/pairings/{0}/decision";
 
         public PairingsClient(IClientSettings settings, 
                                  ICredentialsProvider credentials)

@@ -2,14 +2,6 @@
 
 namespace TailendersApi.Contracts
 {
-    public enum Gender
-    {
-        [Description("Men")]
-        Male = 0,
-        [Description("Women")]
-        Female = 1
-    }
-
     public enum SearchCategory
     {
         [Description("Men")]
