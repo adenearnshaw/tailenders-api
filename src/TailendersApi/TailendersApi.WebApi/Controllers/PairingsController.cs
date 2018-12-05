@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 using TailendersApi.Contracts;
 using TailendersApi.WebApi.Extensions;
 using TailendersApi.WebApi.Managers;
+using TailendersApi.WebApi.Model;
 
 namespace TailendersApi.WebApi.Controllers
 {
@@ -54,8 +55,7 @@ namespace TailendersApi.WebApi.Controllers
         // POST
         [HttpPost("{id}/decision")]
         public async Task<IActionResult> PostDecision(string id, 
-                                                      [FromBody] string pairProfileId,
-                                                      [FromBody] PairingDecision decision)
+                                                      [FromBody] PairingDecisionInput input)
         {
             var hasScope = User.HasRequiredScopes(ReadPermission);
             if (!hasScope)
@@ -70,16 +70,16 @@ namespace TailendersApi.WebApi.Controllers
                     $"Unable to match claim '{ObjectIdElement}' against user claims; click the 'claims' tab to double-check.");
             }
 
-            if (string.IsNullOrEmpty(pairProfileId))
+            if (string.IsNullOrEmpty(input.PairProfileId))
             {
-                return BadRequest($"Parameter: {nameof(pairProfileId)} is null");
+                return BadRequest($"Parameter: {nameof(input.PairProfileId)} is null");
             }
-            if (default(PairingDecision).Equals(decision))
+            if (default(PairingDecision).Equals(input.Decision))
             {
-                return BadRequest($"Parameter: {nameof(decision)} is null");
+                return BadRequest($"Parameter: {nameof(input.Decision)} is null");
             }
 
-            var result = await _pairingsManager.SetPairingDescision(id, pairProfileId, decision);
+            var result = await _pairingsManager.SetPairingDescision(id, input.PairProfileId, input.Decision);
             return new OkObjectResult(result);
         }
     }
