@@ -26,7 +26,7 @@ namespace TailendersApi.Repository
 
         public async Task<IEnumerable<PairingEntity>> GetPairingsForUser(string profileId)
         {
-            var results = await _db.FindAsync<ICollection<PairingEntity>>(profileId);
+            var results = await _db.Pairings.Where(pa => pa.ProfileId == profileId).ToListAsync();
             return results;
         }
 
@@ -53,7 +53,7 @@ namespace TailendersApi.Repository
 
         public async Task<PairingEntity> UpsertPairingData(PairingEntity entity)
         {
-            var pairing = (await _db.FindAsync<ICollection<PairingEntity>>(entity.Id)).FirstOrDefault();
+            var pairing = await _db.FindAsync<PairingEntity>(entity.Id);
 
             if (pairing == null)
             {
