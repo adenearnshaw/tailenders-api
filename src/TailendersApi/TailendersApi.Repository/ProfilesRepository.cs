@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Data.SqlClient;
 using System.Linq;
 using System.Threading.Tasks;
@@ -73,7 +74,15 @@ namespace TailendersApi.Repository
                                                                             (Gender) profile.Gender,
                                                                             (SearchCategory) profile.SearchForCategory);
 
-            var results = await searchQueryWithPreference.ToListAsync();
+            var dateThreshold = DateTime.UtcNow.AddDays(-7);
+            var recentlyUpdated = _db.Pairings
+                                     .Include(pa => pa.Profile)
+                                     .Where(pa => pa.ProfileId == profileId && pa.LastUpdated >= dateThreshold)
+                                     .Select(pa => pa.Profile);
+
+            var excludingRecentlyUpdated = searchQueryWithPreference.Except(recentlyUpdated);
+
+            var results = await excludingRecentlyUpdated.ToListAsync();
 
             return results;
         }
