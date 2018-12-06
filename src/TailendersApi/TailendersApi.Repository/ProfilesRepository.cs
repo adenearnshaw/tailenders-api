@@ -64,27 +64,38 @@ namespace TailendersApi.Repository
 
         public async Task<List<ProfileEntity>> SearchForProfiles(string profileId, int minAge, int maxAge, int[] categories)
         {
-            var profile = await GetProfile(profileId);
+            try
+            {
 
-            var searchQuery = _db.Profiles.Include(pr => pr.ProfileImages)
-                                          .Where(p => p.Age >= minAge
-                                                   && p.Age <= maxAge);
 
-            var searchQueryWithPreference = CalculateSearchProfilePredicate(searchQuery, 
-                                                                            (Gender) profile.Gender,
-                                                                            (SearchCategory) profile.SearchForCategory);
+                var profile = await GetProfile(profileId);
 
-            var dateThreshold = DateTime.UtcNow.AddDays(-7);
-            var recentlyUpdated = _db.Pairings
-                                     .Include(pa => pa.Profile)
-                                     .Where(pa => pa.ProfileId == profileId && pa.LastUpdated >= dateThreshold)
-                                     .Select(pa => pa.Profile);
+                var searchQuery = _db.Profiles.Include(pr => pr.ProfileImages)
+                                              .Where(p => p.Age >= minAge
+                                                       && p.Age <= maxAge);
 
-            var excludingRecentlyUpdated = searchQueryWithPreference.Except(recentlyUpdated);
+                var searchQueryWithPreference = CalculateSearchProfilePredicate(searchQuery,
+                                                                                (Gender)profile.Gender,
+                                                                                (SearchCategory)profile.SearchForCategory);
 
-            var results = await excludingRecentlyUpdated.ToListAsync();
+                var dateThreshold = DateTime.UtcNow.AddDays(-7);
+                var recentlyUpdated = await _db.Pairings
+                                               .Where(pa => pa.ProfileId == profileId && pa.LastUpdated >= dateThreshold)
+                                               .Select(pa => pa.ProfileId)
+                                               .ToListAsync();
 
-            return results;
+                var excludingRecentlyUpdated = searchQueryWithPreference.Where(pr => !recentlyUpdated.Contains(pr.Id));
+
+                var results = await excludingRecentlyUpdated.ToListAsync();
+
+                return results;
+
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+                throw;
+            }
         }
 
         private IQueryable<ProfileEntity> CalculateSearchProfilePredicate(IQueryable<ProfileEntity> query, Gender gender, SearchCategory searchFor)
@@ -102,7 +113,7 @@ namespace TailendersApi.Repository
                 query = query.Where(p => (p.Gender == 1 && p.SearchForCategory == 0) ||
                                          (p.Gender == 0 && p.SearchForCategory == 0));
             }
-            else if(gender == Gender.Female && searchFor == SearchCategory.Men) //Hetro female
+            else if (gender == Gender.Female && searchFor == SearchCategory.Men) //Hetro female
             {
                 query = query.Where(p => p.Gender == 0 && p.SearchForCategory == 1);
             }
