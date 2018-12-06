@@ -1,116 +1,443 @@
 {
 	"info": {
-		"_postman_id": "87e7eea1-d205-49c8-bee7-707b2f54c739",
+		"_postman_id": "e0818ff3-2dc4-4c4e-a4a4-cd1ee71f4adc",
 		"name": "TailendersApi",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
 	"item": [
 		{
-			"name": "/profiles/me",
+			"name": "Pairings",
+			"item": [
+				{
+					"name": "/pairings/decision - change",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"pairProfileId\": \"365eb9f7-bd46-4e7e-92ca-68345f973537\",\n\t\"decision\": \"1\"\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/api/pairings/d12cc0c1-c522-4e15-95a8-2093b951597d/decision",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"pairings",
+								"d12cc0c1-c522-4e15-95a8-2093b951597d",
+								"decision"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "/pairings/decision - not liked",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"pairProfileId\": \"365eb9f7-bd46-4e7e-92ca-68345f973537\",\n\t\"decision\": \"2\"\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/api/pairings/d12cc0c1-c522-4e15-95a8-2093b951597d/decision",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"pairings",
+								"d12cc0c1-c522-4e15-95a8-2093b951597d",
+								"decision"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "/pairings/decision - match",
+					"request": {
+						"auth": {
+							"type": "oauth2",
+							"oauth2": [
+								{
+									"key": "accessToken",
+									"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsImtpZCI6Ilg1ZVhrNHh5b2pORnVtMWtsMll0djhkbE5QNC1jNTdkTzZRR1RWQndhTmsifQ.eyJpc3MiOiJodHRwczovL2xvZ2luLm1pY3Jvc29mdG9ubGluZS5jb20vMGVkNDE5OGEtYjUwNy00MmEwLWExMDMtMzAzNzU3MmY2ODFjL3YyLjAvIiwiZXhwIjoxNTQ0MTIyMzEwLCJuYmYiOjE1NDQxMTg3MTAsImF1ZCI6IjAyYmM3ZmE2LWUyMjctNDA2MS1iMzAzLTI4ZjEwZmNhNTc1NiIsIm9pZCI6IjAwY2U0NmFmLWI0YmUtNDhhNC04ZmJjLTViMzQxYmJlZDc0YyIsInN1YiI6IjAwY2U0NmFmLWI0YmUtNDhhNC04ZmJjLTViMzQxYmJlZDc0YyIsIm5hbWUiOiJUZXN0MDkiLCJ0ZnAiOiJCMkNfMV9HZW5lcmljU2lnbkluU2lnblVwIiwic2NwIjoidXNlcl9pbXBlcnNvbmF0aW9uIHRlLnJlYWQgdGUud3JpdGUiLCJhenAiOiI4MmYzNDNkMi1hYjhjLTRiYTctOWZjYi05NGM1MjRlYzQ3ODIiLCJ2ZXIiOiIxLjAiLCJpYXQiOjE1NDQxMTg3MTB9.VEk_6iywAUm2eulzsIS1fXzg-2zjuS4bgta5Zy41WFOzYUKDjYdqtIZe5Lk7VUcYbcD2_wb_qivq2DHMnLUCK7nw2mI26rOb5vDqQS3dSn-ie7YRZi8Nn-phyESNndqkN6UjDhoEMWJGvFvB3XsbD7YenrpTm3b-3if7r8VxzviKOtFrHDgPagQMqll_yLZNRKhsdcgaSxM3SYO1ZbbydpbJSsKN8XQjqo98pjW5iWndANAF0RzZ9cXHVjuJ-CgqjMz3Y7nF5hS5DodSygt88jS6Ie1xhCYQOd_TDmB6T_R9LNH-6QvBe5G20LVcKnUOg_lRHxy22XG1cM-4Y1Ktsg",
+									"type": "string"
+								},
+								{
+									"key": "tokenType",
+									"value": "Bearer",
+									"type": "string"
+								},
+								{
+									"key": "addTokenTo",
+									"value": "header",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"pairProfileId\": \"d12cc0c1-c522-4e15-95a8-2093b951597d\",\n\t\"decision\": \"1\"\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/api/pairings/00ce46af-b4be-48a4-8fbc-5b341bbed74c/decision",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"pairings",
+								"00ce46af-b4be-48a4-8fbc-5b341bbed74c",
+								"decision"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "/pairings/decision - liked",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"pairProfileId\": \"00ce46af-b4be-48a4-8fbc-5b341bbed74c\",\n\t\"decision\": \"1\"\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/api/pairings/d12cc0c1-c522-4e15-95a8-2093b951597d/decision",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"pairings",
+								"d12cc0c1-c522-4e15-95a8-2093b951597d",
+								"decision"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "/pairings",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {},
+						"url": {
+							"raw": "{{baseUrl}}/api/pairings/d12cc0c1-c522-4e15-95a8-2093b951597d",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"pairings",
+								"d12cc0c1-c522-4e15-95a8-2093b951597d"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Profiles",
+			"item": [
+				{
+					"name": "/profiles/matches",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "e4a5ca34-a273-40da-9b42-0bff975baf1b",
+								"exec": [
+									"if (pm.response.code == 200) {",
+									"    var jsonData = pm.response.json();",
+									"    if (jsonData[0]) {",
+									"        pm.environment.set(\"profile_match_id\", jsonData[0].match_id);",
+									"    }",
+									"}"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {},
+						"url": {
+							"raw": "{{baseUrl}}/api/profiles/d12cc0c1-c522-4e15-95a8-2093b951597d/matches",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"profiles",
+								"d12cc0c1-c522-4e15-95a8-2093b951597d",
+								"matches"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "/profiles",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{baseUrl}}/api/profiles/d12cc0c1-c522-4e15-95a8-2093b951597d",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"profiles",
+								"d12cc0c1-c522-4e15-95a8-2093b951597d"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "/profiles/image",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"value": "application/x-www-form-urlencoded",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{baseUrl}}/api/profiles/d12cc0c1-c522-4e15-95a8-2093b951597d/image",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"profiles",
+								"d12cc0c1-c522-4e15-95a8-2093b951597d",
+								"image"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "/profiles",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"id\": \"d12cc0c1-c522-4e15-95a8-2093b951597d\",\n\t\"name\": \"Ade\"\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/api/profiles/",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"profiles",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "/profiles",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {},
+						"url": {
+							"raw": "{{baseUrl}}/api/profiles/d12cc0c1-c522-4e15-95a8-2093b951597d",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"profiles",
+								"d12cc0c1-c522-4e15-95a8-2093b951597d"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "/profiles",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"id\": \"d12cc0c1-c522-4e15-95a8-2093b951597d\",\n\t\"name\": \"Aden\"\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/api/profiles/",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"profiles",
+								""
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Matches",
+			"item": [
+				{
+					"name": "/matches - update",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"match_id\": \"{{profile_match_id}}\",\n\t\"profile_id\": \"d12cc0c1-c522-4e15-95a8-2093b951597d\",\n\t\"matched_at\": \"2018-12-06 12:21:11.7326493\",\n\t\"user_contact_details_visible\": true\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/api/matches",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"matches"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "/matches - unmatch",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{baseUrl}}/api/matches/{{profile_match_id}}/unmatch",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"matches",
+								"{{profile_match_id}}",
+								"unmatch"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "/status",
 			"request": {
+				"auth": {
+					"type": "noauth"
+				},
 				"method": "GET",
 				"header": [],
 				"body": {},
 				"url": {
-					"raw": "https://localhost:5001/api/profiles/me",
-					"protocol": "https",
+					"raw": "{{baseUrl}}/api/status",
 					"host": [
-						"localhost"
+						"{{baseUrl}}"
 					],
-					"port": "5001",
 					"path": [
 						"api",
-						"profiles",
-						"me"
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "/profiles",
-			"request": {
-				"method": "POST",
-				"header": [
-					{
-						"key": "Content-Type",
-						"name": "Content-Type",
-						"value": "application/json",
-						"type": "text"
-					}
-				],
-				"body": {
-					"mode": "raw",
-					"raw": "{\n\t\"id\": \"d12cc0c1-c522-4e15-95a8-2093b951597d\",\n\t\"name\": \"Aden\"\n}"
-				},
-				"url": {
-					"raw": "https://localhost:5001/api/profiles/",
-					"protocol": "https",
-					"host": [
-						"localhost"
-					],
-					"port": "5001",
-					"path": [
-						"api",
-						"profiles",
-						""
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "/profiles",
-			"request": {
-				"method": "PUT",
-				"header": [
-					{
-						"key": "Content-Type",
-						"name": "Content-Type",
-						"value": "application/json",
-						"type": "text"
-					}
-				],
-				"body": {
-					"mode": "raw",
-					"raw": "{\n\t\"id\": \"d12cc0c1-c522-4e15-95a8-2093b951597d\",\n\t\"name\": \"Ade\"\n}"
-				},
-				"url": {
-					"raw": "https://localhost:5001/api/profiles/",
-					"protocol": "https",
-					"host": [
-						"localhost"
-					],
-					"port": "5001",
-					"path": [
-						"api",
-						"profiles",
-						""
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "/profiles",
-			"request": {
-				"method": "DELETE",
-				"header": [],
-				"body": {
-					"mode": "raw",
-					"raw": ""
-				},
-				"url": {
-					"raw": "https://localhost:5001/api/profiles/d12cc0c1-c522-4e15-95a8-2093b951597d",
-					"protocol": "https",
-					"host": [
-						"localhost"
-					],
-					"port": "5001",
-					"path": [
-						"api",
-						"profiles",
-						"d12cc0c1-c522-4e15-95a8-2093b951597d"
+						"status"
 					]
 				}
 			},
@@ -122,7 +449,7 @@
 		"oauth2": [
 			{
 				"key": "accessToken",
-				"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsImtpZCI6Ilg1ZVhrNHh5b2pORnVtMWtsMll0djhkbE5QNC1jNTdkTzZRR1RWQndhTmsifQ.eyJpc3MiOiJodHRwczovL2xvZ2luLm1pY3Jvc29mdG9ubGluZS5jb20vMGVkNDE5OGEtYjUwNy00MmEwLWExMDMtMzAzNzU3MmY2ODFjL3YyLjAvIiwiZXhwIjoxNTQxNDYyNjM1LCJuYmYiOjE1NDE0NTkwMzUsImF1ZCI6IjAyYmM3ZmE2LWUyMjctNDA2MS1iMzAzLTI4ZjEwZmNhNTc1NiIsIm9pZCI6ImQxMmNjMGMxLWM1MjItNGUxNS05NWE4LTIwOTNiOTUxNTk3ZCIsInN1YiI6ImQxMmNjMGMxLWM1MjItNGUxNS05NWE4LTIwOTNiOTUxNTk3ZCIsIm5hbWUiOiJBZGVuIiwidGZwIjoiQjJDXzFfR2VuZXJpY1NpZ25JblNpZ25VcCIsInNjcCI6InVzZXJfaW1wZXJzb25hdGlvbiIsImF6cCI6IjgyZjM0M2QyLWFiOGMtNGJhNy05ZmNiLTk0YzUyNGVjNDc4MiIsInZlciI6IjEuMCIsImlhdCI6MTU0MTQ1OTAzNX0.pAem6ei1q-tFNogYsK_u33Ei8LyGSzwAmP0YuWROTyOa2Nvr9sKwHqnCph1fnszJz1EF3FNn_QoAQ4pfKmqakBzF3jRXxvgK1LL4BZ168l3UGbukSLc5qKPKPMuc6IBOxg3bwkxaPPB5PtbsRH3bly1CD0fIZmv5UYp8BbFX794TDJW2B8cG2Zz37QCetnZWkA0QA-TFPJwuJ7OdRIXZ4DhtraHQTD6OuGJEfmdn4CgSvvTcL5dGDqXZgDqmIf7-btyl0Bg3_DXHkiNTOQEA1EvpgzkNhuopwsiGI_Y1bznAgJUHxVjxpfiTdOXZ0HcYFaphCq_4n2C89JlbE56H7g",
+				"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsImtpZCI6Ilg1ZVhrNHh5b2pORnVtMWtsMll0djhkbE5QNC1jNTdkTzZRR1RWQndhTmsifQ.eyJpc3MiOiJodHRwczovL2xvZ2luLm1pY3Jvc29mdG9ubGluZS5jb20vMGVkNDE5OGEtYjUwNy00MmEwLWExMDMtMzAzNzU3MmY2ODFjL3YyLjAvIiwiZXhwIjoxNTQ0MTI2MzQ4LCJuYmYiOjE1NDQxMjI3NDgsImF1ZCI6IjAyYmM3ZmE2LWUyMjctNDA2MS1iMzAzLTI4ZjEwZmNhNTc1NiIsIm9pZCI6ImQxMmNjMGMxLWM1MjItNGUxNS05NWE4LTIwOTNiOTUxNTk3ZCIsInN1YiI6ImQxMmNjMGMxLWM1MjItNGUxNS05NWE4LTIwOTNiOTUxNTk3ZCIsIm5hbWUiOiJBZGVuIiwidGZwIjoiQjJDXzFfR2VuZXJpY1NpZ25JblNpZ25VcCIsInNjcCI6InVzZXJfaW1wZXJzb25hdGlvbiB0ZS5yZWFkIHRlLndyaXRlIiwiYXpwIjoiODJmMzQzZDItYWI4Yy00YmE3LTlmY2ItOTRjNTI0ZWM0NzgyIiwidmVyIjoiMS4wIiwiaWF0IjoxNTQ0MTIyNzQ4fQ.W7rqnVuTcsa5yZDQ6EHh7fuljsYGGrhHCyQB1D1T-ULRPKrWHuWHAzgPTVebQ5ShVfVOX0-Zo1WuXH0tS4PPnm4gefLeDBVZ7V0iS_5Dgkk80daZQWDhIdiybS-sJTXPSrMGbiRxoz1bpCq8GT9VnpEF1hgZ-BOGq3d9uj8b1jhupuAFHGnxzG1TBrVn4Lwj20qwHpjcZLBIEWULbJS_X1MWjYbjhYpHj-as-lmC6JkucGNVEPAPiNGW9w2wsymvX4KNAfxH89bCJKiaz3W1KD1xfL_hKTE2L-G7T0tStZe5TGN-cWEJRtpTNQBItK56Wzep17JE3-jai-9uMDcVjQ",
 				"type": "string"
 			},
 			{

@@ -37,7 +37,11 @@ namespace TailendersApi.Repository
 
         public async Task<MatchEntity> GetMatch(string matchId)
         {
-            var match = await _db.Matches.FindAsync(matchId);
+            var match = await _db.Matches
+                                 .Include(m => m.ProfileMatches)
+                                 .Include(m => m.MatchContactPreferences)
+                                 .ThenInclude(mc => mc.Profile)
+                                 .FirstOrDefaultAsync(m => m.Id.Equals(matchId));
             return match;
         }
 
