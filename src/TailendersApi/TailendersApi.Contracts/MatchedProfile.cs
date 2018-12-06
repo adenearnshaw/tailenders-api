@@ -12,6 +12,8 @@ namespace TailendersApi.Contracts
         public string Name { get; set; }
         [JsonProperty("age")]
         public int Age { get; set; }
+        [JsonProperty("show_age")]
+        public bool ShowAge { get; set; }
         [JsonProperty("location")]
         public string Location { get; set; }
         [JsonProperty("bio")]

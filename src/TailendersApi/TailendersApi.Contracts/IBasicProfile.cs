@@ -7,6 +7,7 @@ namespace TailendersApi.Contracts
         string Id { get; set; }
         string Name { get; set; }
         int Age { get; set; }
+        bool ShowAge { get; set; }
         string Location { get; set; }
         string Bio { get; set; }
         int FavouritePosition { get; set; }

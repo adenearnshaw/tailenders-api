@@ -19,6 +19,7 @@ namespace TailendersApi.WebApi.Mappers
             var contract = new MatchDetail
             {
                 Id = entity.Id,
+                ProfileId = profileId,
                 MatchedAt = entity.MatchedAt,
                 MatchedProfile = ProfileMapper.ToMatchedProfileContract(matchContactPrefs.Profile, matchContactPrefs.ContactDetailsVisible),
                 UserContactDetailsVisible = contactPrefs.ContactDetailsVisible
