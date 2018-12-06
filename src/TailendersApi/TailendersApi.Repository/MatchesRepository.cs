@@ -28,6 +28,7 @@ namespace TailendersApi.Repository
         {
             var matches = await _db.Matches
                                    .Include(m => m.MatchContactPreferences)
+                                   .ThenInclude(mc => mc.Profile)
                                    .Where(m => m.ProfileMatches.Any(pm => pm.ProfileId == profileId))
                                    .ToListAsync();
             return matches;
