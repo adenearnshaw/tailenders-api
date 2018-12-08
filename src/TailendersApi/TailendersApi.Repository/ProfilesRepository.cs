@@ -66,12 +66,11 @@ namespace TailendersApi.Repository
         {
             try
             {
-
-
                 var profile = await GetProfile(profileId);
 
                 var searchQuery = _db.Profiles.Include(pr => pr.ProfileImages)
-                                              .Where(p => p.Age >= minAge
+                                              .Where(p => p.Id != profileId 
+                                                       && p.Age >= minAge
                                                        && p.Age <= maxAge);
 
                 var searchQueryWithPreference = CalculateSearchProfilePredicate(searchQuery,
@@ -81,7 +80,7 @@ namespace TailendersApi.Repository
                 var dateThreshold = DateTime.UtcNow.AddDays(-7);
                 var recentlyUpdated = await _db.Pairings
                                                .Where(pa => pa.ProfileId == profileId && pa.LastUpdated >= dateThreshold)
-                                               .Select(pa => pa.ProfileId)
+                                               .Select(pa => pa.PairedProfileId)
                                                .ToListAsync();
 
                 var excludingRecentlyUpdated = searchQueryWithPreference.Where(pr => !recentlyUpdated.Contains(pr.Id));

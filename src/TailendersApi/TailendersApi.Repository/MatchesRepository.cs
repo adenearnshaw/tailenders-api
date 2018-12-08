@@ -11,6 +11,7 @@ namespace TailendersApi.Repository
     {
         Task<List<MatchEntity>> GetMatchesForProfile(string profileId);
         Task<MatchEntity> GetMatch(string matchId);
+        Task<MatchEntity> FindMatch(string profileId, string pairedProfileId);
         Task<MatchEntity> UpsertMatch(MatchEntity entity);
         Task DeleteMatch(string matchId);
     }
@@ -42,6 +43,17 @@ namespace TailendersApi.Repository
                                  .Include(m => m.MatchContactPreferences)
                                  .ThenInclude(mc => mc.Profile)
                                  .FirstOrDefaultAsync(m => m.Id.Equals(matchId));
+            return match;
+        }
+
+        public async Task<MatchEntity> FindMatch(string profileId, string pairedProfileId)
+        {
+            var match = await _db.Matches
+                                 .Include(m => m.ProfileMatches)
+                                 .Where(m => m.ProfileMatches
+                                              .Any(pm => pm.ProfileId == profileId))
+                                 .FirstOrDefaultAsync(m => m.ProfileMatches
+                                                            .Any(pm => pm.ProfileId == pairedProfileId));
             return match;
         }
 

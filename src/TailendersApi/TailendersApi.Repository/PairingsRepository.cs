@@ -40,7 +40,7 @@ namespace TailendersApi.Repository
         public async Task<bool> CheckIfMatch(string profileId, string pairedProfileId)
         {
             var results = await _db.Pairings.Where(pa => (pa.ProfileId == profileId && pa.PairedProfileId == pairedProfileId) ||
-                                                   (pa.ProfileId == pairedProfileId && pa.PairedProfileId == profileId))
+                                                         (pa.ProfileId == pairedProfileId && pa.PairedProfileId == profileId))
                                             .ToListAsync();
 
             if (results.Count >= 2)
