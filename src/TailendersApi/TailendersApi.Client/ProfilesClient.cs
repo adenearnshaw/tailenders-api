@@ -1,4 +1,8 @@
-﻿using System.Threading.Tasks;
+﻿using System.Net;
+using System.Net.Http;
+using System.Threading.Tasks;
+using Newtonsoft.Json;
+using TailendersApi.Client.Exceptions;
 using TailendersApi.Contracts;
 
 namespace TailendersApi.Client
@@ -27,7 +31,18 @@ namespace TailendersApi.Client
         public async Task<Profile> GetProfile()
         {
             var url = string.Format(Profiles_Get_Url, Credentials.UserId);
-            var profile = await Get<Profile>(url);
+
+            var response = await Send(HttpMethod.Get, url);
+
+            if (!response.IsSuccessStatusCode)
+                return default(Profile);
+
+            var responseContent = await response.Content.ReadAsStringAsync();
+
+            if (response.StatusCode == HttpStatusCode.OK && string.IsNullOrWhiteSpace(responseContent))
+                throw new ProfileDoesntExistException();
+            
+            var profile = JsonConvert.DeserializeObject<Profile>(responseContent);
             return profile;
         }
 

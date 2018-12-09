@@ -43,6 +43,7 @@ namespace TailendersApi.WebApi.Controllers
             }
 
             var profile = await _profilesManager.GetProfile(owner);
+            
             return Ok(profile);
         }
 
