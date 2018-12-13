@@ -39,7 +39,7 @@ namespace TailendersApi.Client
 
             var responseContent = await response.Content.ReadAsStringAsync();
 
-            if (response.StatusCode == HttpStatusCode.OK && string.IsNullOrWhiteSpace(responseContent))
+            if (response.StatusCode == HttpStatusCode.NoContent && string.IsNullOrWhiteSpace(responseContent))
                 throw new ProfileDoesntExistException();
             
             var profile = JsonConvert.DeserializeObject<Profile>(responseContent);
