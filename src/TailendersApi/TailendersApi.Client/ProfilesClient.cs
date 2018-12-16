@@ -45,18 +45,30 @@ namespace TailendersApi.Client
                 throw new ProfileDoesntExistException();
 
             var profile = JsonConvert.DeserializeObject<Profile>(responseContent);
+
+            if (profile.IsBlocked)
+                throw new ProfileBlockedException();
+
             return profile;
         }
 
         public async Task<Profile> CreateProfile(Profile createProfile)
         {
             var profile = await Post<Profile, Profile>(Profiles_Create_Url, createProfile);
+
+            if (profile.IsBlocked)
+                throw new ProfileBlockedException();
+
             return profile;
         }
 
         public async Task<Profile> UpdateProfile(Profile updatedProfile)
         {
             var profile = await Put<Profile, Profile>(Profiles_Update_Url, updatedProfile);
+
+            if (profile.IsBlocked)
+                throw new ProfileBlockedException();
+
             return profile;
         }
 
