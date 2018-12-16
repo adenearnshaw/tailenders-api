@@ -63,7 +63,9 @@ namespace TailendersApi.Repository
             }
             await _db.SaveChangesAsync();
 
-            return entity;
+            var updatedProfile = await GetProfile(entity.Id);
+
+            return updatedProfile;
         }
 
         public async Task DeleteProfile(string profileId)
