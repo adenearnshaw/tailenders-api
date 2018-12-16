@@ -43,7 +43,23 @@ namespace TailendersApi.Repository
             }
             else
             {
-                _db.Update(entity);
+                profile.Name = entity.Name;
+                profile.Age = entity.Age;
+                profile.ShowAge = entity.ShowAge;
+                profile.Location = entity.Location;
+                profile.Latitude = entity.Latitude;
+                profile.Longitude = entity.Longitude;
+                profile.Bio = entity.Bio;
+                profile.ContactDetails = entity.ContactDetails;
+                profile.FavouritePosition = entity.FavouritePosition;
+                profile.Gender = entity.Gender;
+                profile.SearchForCategory = entity.SearchForCategory;
+                profile.SearchRadius = entity.SearchRadius;
+                profile.SearchMinAge = entity.SearchMinAge;
+                profile.SearchMaxAge = entity.SearchMaxAge;
+                profile.UpdatedAt = DateTime.UtcNow;
+
+                _db.Update(profile);
             }
             await _db.SaveChangesAsync();
 
