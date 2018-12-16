@@ -29,5 +29,8 @@ namespace TailendersApi.Repository.Entities
         public List<ProfileImageEntity> ProfileImages { get; set; }
         public List<ProfileMatchEntity> ProfileMatches { get; set; }
         public List<MatchContactPreferenceEntity> MatchContactPreferences { get; set; }
+
+        public bool IsBlocked { get; set; }
+        public DateTime? BlockedAt { get; set; }
     }
 }

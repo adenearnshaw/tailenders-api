@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using TailendersApi.Contracts;
 using TailendersApi.Repository;
+using TailendersApi.Repository.Entities;
 using TailendersApi.WebApi.Mappers;
 
 namespace TailendersApi.WebApi.Managers
@@ -13,6 +14,7 @@ namespace TailendersApi.WebApi.Managers
         Task<List<MatchDetail>> GetProfileMatches(string profileId);
         Task<MatchDetail> UpdateMatch(MatchDetail match);
         Task UnmatchProfile(string profileId, string matchId);
+        Task BlockMatch(string profileId, string matchId);
     }
 
     public class MatchesManager : IMatchesManager
@@ -58,7 +60,39 @@ namespace TailendersApi.WebApi.Managers
             if (pairing != null)
             {
                 pairing.IsLiked = false;
-                pairing.LastUpdated = DateTime.UtcNow;
+                pairing.UpdatedAt = DateTime.UtcNow;
+            }
+
+            await _matchesRepository.DeleteMatch(matchId);
+            await _pairingsRepository.UpsertPairingData(pairing);
+        }
+
+        public async Task BlockMatch(string profileId, string matchId)
+        {
+            var match = await _matchesRepository.GetMatch(matchId);
+            var matchProfileId = match.ProfileMatches.FirstOrDefault(pm => pm.ProfileId != profileId)?.ProfileId ?? string.Empty;
+
+            var pairing = await _pairingsRepository.GetPairing(profileId, matchProfileId);
+
+            if (pairing != null)
+            {
+                pairing.UpdatedAt = DateTime.UtcNow;
+                pairing.IsLiked = false;
+                pairing.IsBlocked = true;
+                await _pairingsRepository.UpsertPairingData(pairing);
+            }
+            else
+            {
+                var newPairing = new PairingEntity
+                {
+                    Id = Guid.NewGuid().ToString(),
+                    ProfileId = profileId,
+                    PairedProfileId = matchProfileId,
+                    IsLiked = false,
+                    IsBlocked = true,
+                    UpdatedAt = DateTime.UtcNow
+                };
+                pairing = newPairing;
             }
 
             await _matchesRepository.DeleteMatch(matchId);

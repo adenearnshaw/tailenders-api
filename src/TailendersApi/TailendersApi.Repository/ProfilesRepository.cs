@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Data.SqlClient;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
@@ -14,6 +13,7 @@ namespace TailendersApi.Repository
         Task<ProfileEntity> GetProfile(string profileId);
         Task<ProfileEntity> UpsertProfile(ProfileEntity entity);
         Task DeleteProfile(string profileId);
+        Task ReportProfile(string profileId, int reasonCode);
         Task<List<ProfileEntity>> SearchForProfiles(string profileId, int minAge, int maxAge, int[] categories);
     }
 
@@ -25,7 +25,6 @@ namespace TailendersApi.Repository
         {
             _db = context;
         }
-
 
         public async Task<ProfileEntity> GetProfile(string profileId)
         {
@@ -62,6 +61,24 @@ namespace TailendersApi.Repository
             await _db.SaveChangesAsync();
         }
 
+        public async Task ReportProfile(string profileId, int reasonCode)
+        {
+            var profile = await GetProfile(profileId);
+
+            if (profile != null)
+            {
+                var report = new ReportedProfileEntity
+                {
+                    Id = Guid.NewGuid().ToString(),
+                    ProfileId = profileId,
+                    ReasonCode = reasonCode,
+                    ReportedAt = DateTime.UtcNow
+                };
+                await _db.ReportedProfiles.AddAsync(report);
+                await _db.SaveChangesAsync();
+            }
+        }
+
         public async Task<List<ProfileEntity>> SearchForProfiles(string profileId, int minAge, int maxAge, int[] categories)
         {
             try
@@ -69,21 +86,23 @@ namespace TailendersApi.Repository
                 var profile = await GetProfile(profileId);
 
                 var searchQuery = _db.Profiles.Include(pr => pr.ProfileImages)
-                                              .Where(p => p.Id != profileId 
+                                              .Where(p => p.Id != profileId
                                                        && p.Age >= minAge
-                                                       && p.Age <= maxAge);
+                                                       && p.Age <= maxAge
+                                                       && !p.IsBlocked);
 
                 var searchQueryWithPreference = CalculateSearchProfilePredicate(searchQuery,
                                                                                 (Gender)profile.Gender,
                                                                                 (SearchCategory)profile.SearchForCategory);
 
                 var dateThreshold = DateTime.UtcNow.AddDays(-7);
-                var recentlyUpdated = await _db.Pairings
-                                               .Where(pa => pa.ProfileId == profileId && pa.LastUpdated >= dateThreshold)
-                                               .Select(pa => pa.PairedProfileId)
-                                               .ToListAsync();
+                var profilesToExclude = await _db.Pairings
+                                                 .Where(pa => pa.ProfileId == profileId
+                                                          && (pa.UpdatedAt >= dateThreshold || pa.IsBlocked))
+                                                 .Select(pa => pa.PairedProfileId)
+                                                 .ToListAsync();
 
-                var excludingRecentlyUpdated = searchQueryWithPreference.Where(pr => !recentlyUpdated.Contains(pr.Id));
+                var excludingRecentlyUpdated = searchQueryWithPreference.Where(pr => !profilesToExclude.Contains(pr.Id));
 
                 var results = await excludingRecentlyUpdated.ToListAsync();
 

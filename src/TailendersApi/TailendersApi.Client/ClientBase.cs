@@ -3,6 +3,7 @@ using System;
 using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
+using TailendersApi.Client.Exceptions;
 
 namespace TailendersApi.Client
 {
@@ -79,7 +80,7 @@ namespace TailendersApi.Client
         private async Task<T> GetResult<T>(HttpResponseMessage response)
         {
             if (!response.IsSuccessStatusCode)
-                return default(T);
+                throw new ClientException((int)response.StatusCode, response.ReasonPhrase);
 
             var json = await response.Content.ReadAsStringAsync();
             var result = JsonConvert.DeserializeObject<T>(json);

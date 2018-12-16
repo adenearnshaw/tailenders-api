@@ -1,5 +1,4 @@
-﻿using System;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using TailendersApi.Contracts;
@@ -41,7 +40,7 @@ namespace TailendersApi.WebApi.Controllers
             }
 
             var owner = User.CheckClaimMatch(ObjectIdElement);
-            if (string.IsNullOrEmpty(owner))
+            if (!owner.Equals(id))
             {
                 return BadRequest(
                     $"Unable to match claim '{ObjectIdElement}' against user claims; click the 'claims' tab to double-check.");
@@ -64,7 +63,7 @@ namespace TailendersApi.WebApi.Controllers
             }
 
             var owner = User.CheckClaimMatch(ObjectIdElement);
-            if (string.IsNullOrEmpty(owner))
+            if (!owner.Equals(id))
             {
                 return BadRequest(
                     $"Unable to match claim '{ObjectIdElement}' against user claims; click the 'claims' tab to double-check.");
@@ -81,6 +80,28 @@ namespace TailendersApi.WebApi.Controllers
 
             var result = await _pairingsManager.SetPairingDescision(id, input.PairProfileId, input.Decision);
             return new OkObjectResult(result);
+        }
+
+        // POST
+        [HttpPost("{id}/block")]
+        public async Task<IActionResult> Block(string id, [FromBody] string pairedProfileId)
+        {
+            var hasScope = User.HasRequiredScopes(ReadPermission);
+            if (!hasScope)
+            {
+                return Unauthorized();
+            }
+
+            var owner = User.CheckClaimMatch(ObjectIdElement);
+            if (!owner.Equals(id))
+            {
+                return BadRequest(
+                    $"Unable to match claim '{ObjectIdElement}' against user claims; click the 'claims' tab to double-check.");
+            }
+            
+            await _pairingsManager.BlockPairing(id, pairedProfileId);
+
+            return Ok();
         }
     }
 }

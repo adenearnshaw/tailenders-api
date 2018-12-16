@@ -13,6 +13,7 @@ namespace TailendersApi.Client
         Task<Profile> CreateProfile(Profile createProfile);
         Task<Profile> UpdateProfile(Profile updatedProfile);
         Task DeleteProfile();
+        Task ReportProfile(string profileId, ReportProfileReason reason);
     }
 
     public class ProfilesClient : ClientBase, IProfilesClient
@@ -21,7 +22,8 @@ namespace TailendersApi.Client
         private const string Profiles_Create_Url = "/api/profiles/";
         private const string Profiles_Update_Url = "/api/profiles/";
         private const string Profiles_Delete_Url = "/api/profiles/{0}";
-        
+        private const string Profiles_Report_Url = "/api/profiles/report/{0}";
+
         public ProfilesClient(IClientSettings settings,
                               ICredentialsProvider credentials)
             : base(settings, credentials)
@@ -41,7 +43,7 @@ namespace TailendersApi.Client
 
             if (response.StatusCode == HttpStatusCode.NoContent && string.IsNullOrWhiteSpace(responseContent))
                 throw new ProfileDoesntExistException();
-            
+
             var profile = JsonConvert.DeserializeObject<Profile>(responseContent);
             return profile;
         }
@@ -62,6 +64,19 @@ namespace TailendersApi.Client
         {
             var url = string.Format(Profiles_Delete_Url, Credentials.UserId);
             await Delete(url);
+        }
+
+        public async Task ReportProfile(string profileId, ReportProfileReason reason)
+        {
+            var url = string.Format(Profiles_Report_Url, profileId);
+            var body = new
+            {
+                profileId = profileId,
+                reportReason = reason
+            };
+            var json = JsonConvert.SerializeObject(body);
+
+            await Send(HttpMethod.Post, url, json);
         }
     }
 

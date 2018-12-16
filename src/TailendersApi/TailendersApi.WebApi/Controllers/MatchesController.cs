@@ -61,5 +61,27 @@ namespace TailendersApi.WebApi.Controllers
 
             return Ok();
         }
+
+        // POST
+        [HttpPost("{matchId}/block")]
+        public async Task<IActionResult> Block(string matchId)
+        {
+            var hasScope = User.HasRequiredScopes(ReadPermission);
+            if (!hasScope)
+            {
+                return Unauthorized();
+            }
+
+            var owner = User.CheckClaimMatch(ObjectIdElement);
+            if (string.IsNullOrEmpty(owner))
+            {
+                return BadRequest(
+                    $"Unable to match claim '{ObjectIdElement}' against user claims; click the 'claims' tab to double-check.");
+            }
+
+            await _matchesManager.BlockMatch(owner, matchId);
+
+            return Ok();
+        }
     }
 }

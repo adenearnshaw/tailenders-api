@@ -9,7 +9,7 @@ namespace TailendersApi.Repository.Entities
         public string PairedProfileId { get; set; }
         public bool IsLiked { get; set; }
         public bool IsBlocked { get; set; }
-        public DateTime LastUpdated { get; set; }
+        public DateTime UpdatedAt { get; set; }
 
         public ProfileEntity Profile { get; set; }
         

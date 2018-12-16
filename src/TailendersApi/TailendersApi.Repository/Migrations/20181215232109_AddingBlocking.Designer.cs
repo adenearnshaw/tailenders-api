@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using TailendersApi.Repository;
 
 namespace TailendersApi.Repository.Migrations
 {
     [DbContext(typeof(TailendersContext))]
-    partial class TailendersContextModelSnapshot : ModelSnapshot
+    [Migration("20181215232109_AddingBlocking")]
+    partial class AddingBlocking
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -172,30 +174,6 @@ namespace TailendersApi.Repository.Migrations
                     b.ToTable("ProfileMatches");
                 });
 
-            modelBuilder.Entity("TailendersApi.Repository.Entities.ReportedProfileEntity", b =>
-                {
-                    b.Property<string>("Id")
-                        .ValueGeneratedOnAdd();
-
-                    b.Property<bool>("HasBeenReviewed");
-
-                    b.Property<string>("ProfileId");
-
-                    b.Property<int>("ReasonCode");
-
-                    b.Property<DateTime>("ReportedAt");
-
-                    b.Property<string>("ReviewNotes");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("ProfileId")
-                        .IsUnique()
-                        .HasFilter("[ProfileId] IS NOT NULL");
-
-                    b.ToTable("ReportedProfiles");
-                });
-
             modelBuilder.Entity("TailendersApi.Repository.Entities.BlockedProfileEntitiy", b =>
                 {
                     b.HasOne("TailendersApi.Repository.Entities.ProfileEntity", "Profile")
@@ -242,13 +220,6 @@ namespace TailendersApi.Repository.Migrations
                         .WithMany("ProfileMatches")
                         .HasForeignKey("ProfileId")
                         .OnDelete(DeleteBehavior.Cascade);
-                });
-
-            modelBuilder.Entity("TailendersApi.Repository.Entities.ReportedProfileEntity", b =>
-                {
-                    b.HasOne("TailendersApi.Repository.Entities.ProfileEntity", "Profile")
-                        .WithOne()
-                        .HasForeignKey("TailendersApi.Repository.Entities.ReportedProfileEntity", "ProfileId");
                 });
 #pragma warning restore 612, 618
         }

@@ -30,6 +30,9 @@ namespace TailendersApi.WebApi.Mappers
                 UpdatedAt = entity.UpdatedAt
             };
 
+            if (entity.IsBlocked)
+                contract.IsBlocked = true;
+
             if (entity.ProfileImages != null)
             {
                 contract.Images = entity.ProfileImages

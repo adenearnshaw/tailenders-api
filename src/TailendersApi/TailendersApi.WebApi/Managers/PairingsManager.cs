@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 using TailendersApi.Contracts;
 using TailendersApi.Repository;
@@ -11,6 +10,7 @@ namespace TailendersApi.WebApi.Managers
     public interface IPairingsManager
     {
         Task<MatchResult> SetPairingDescision(string profileId, string pairedProfileId, PairingDecision decision);
+        Task BlockPairing(string profileId, string pairedProfileId);
     }
 
     public class PairingsManager : IPairingsManager
@@ -31,7 +31,7 @@ namespace TailendersApi.WebApi.Managers
 
             if (existingPairing != null)
             {
-                existingPairing.LastUpdated = DateTime.UtcNow;
+                existingPairing.UpdatedAt = DateTime.UtcNow;
                 existingPairing.IsLiked = decision == PairingDecision.Liked;
                 await _pairingsRepository.UpsertPairingData(existingPairing);
             }
@@ -43,7 +43,7 @@ namespace TailendersApi.WebApi.Managers
                     ProfileId = profileId,
                     PairedProfileId = pairedProfileId,
                     IsLiked = decision == PairingDecision.Liked,
-                    LastUpdated = DateTime.UtcNow
+                    UpdatedAt = DateTime.UtcNow
                 };
                 await _pairingsRepository.UpsertPairingData(newPairing);
             }
@@ -92,6 +92,32 @@ namespace TailendersApi.WebApi.Managers
                 IsMatch = isMatch
             };
             return matchResult;
+        }
+
+        public async Task BlockPairing(string profileId, string pairedProfileId)
+        {
+            var existingPairing = await _pairingsRepository.GetPairing(profileId, pairedProfileId);
+
+            if (existingPairing != null)
+            {
+                existingPairing.UpdatedAt = DateTime.UtcNow;
+                existingPairing.IsLiked = false;
+                existingPairing.IsBlocked = true;
+                await _pairingsRepository.UpsertPairingData(existingPairing);
+            }
+            else
+            {
+                var newPairing = new PairingEntity
+                {
+                    Id = Guid.NewGuid().ToString(),
+                    ProfileId = profileId,
+                    PairedProfileId = pairedProfileId,
+                    IsLiked = false,
+                    IsBlocked = true,
+                    UpdatedAt = DateTime.UtcNow
+                };
+                await _pairingsRepository.UpsertPairingData(newPairing);
+            }
         }
     }
 }

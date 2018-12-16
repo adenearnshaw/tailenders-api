@@ -1,5 +1,7 @@
 ﻿using System.Collections.Generic;
+using System.Net.Http;
 using System.Threading.Tasks;
+using TailendersApi.Client.Exceptions;
 using TailendersApi.Contracts;
 
 namespace TailendersApi.Client
@@ -8,12 +10,14 @@ namespace TailendersApi.Client
     {
         Task<IList<SearchProfile>> SearchForProfiles();
         Task<MatchResult> SendPairDecision(string pairedProfileId, PairingDecision decision);
+        Task BlockPairing(string pairedProfileId);
     }
 
     public class PairingsClient : ClientBase, IPairingsClient
     {
         private const string Pairings_Get_Url = "/api/pairings/{0}";
         private const string Pairings_PostDecision_Url = "/api/pairings/{0}/decision";
+        private const string Pairings_Block_Url = "/api/pairings/{0}/block";
 
         public PairingsClient(IClientSettings settings, 
                                  ICredentialsProvider credentials)
@@ -40,6 +44,15 @@ namespace TailendersApi.Client
             var matchResult = await Post<object, MatchResult>(url, data);
 
             return matchResult;
+        }
+
+        public async Task BlockPairing(string pairedProfileId)
+        {
+            var url = string.Format(Pairings_Block_Url, Credentials.UserId);
+            var response = await Send(HttpMethod.Post, url, pairedProfileId);
+
+            if (!response.IsSuccessStatusCode)
+                throw new ClientException((int)response.StatusCode, response.ReasonPhrase);
         }
     }
 }

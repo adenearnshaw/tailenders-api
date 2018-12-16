@@ -51,5 +51,8 @@ namespace TailendersApi.Contracts
 
         [JsonProperty("images")]
         public List<ProfileImage> Images { get; set; }
+
+        [JsonProperty("is_blocked", DefaultValueHandling = DefaultValueHandling.Ignore)]
+        public bool IsBlocked { get; set; }
     }
 }

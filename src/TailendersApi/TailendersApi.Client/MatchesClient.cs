@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Net.Http;
 using System.Threading.Tasks;
 using TailendersApi.Contracts;
 
@@ -9,6 +10,7 @@ namespace TailendersApi.Client
         Task<List<MatchDetail>> GetMatches();
         Task<MatchDetail> UpdateMatch(MatchDetail matchDetail);
         Task Unmatch(MatchDetail matchDetail);
+        Task BlockMatch(MatchDetail matchDetail);
     }
 
     public class MatchesClient : ClientBase, IMatchesClient
@@ -16,6 +18,7 @@ namespace TailendersApi.Client
         private const string Profiles_GetMatches_Url = "/api/profiles/{0}/matches";
         private const string Matches_Update_Url = "/api/matches/";
         private const string Matches_Delete_Url = "/api/matches/{0}/unmatch";
+        private const string Matches_Block_Url = "/api/matches/{0}/block";
 
         public MatchesClient(IClientSettings clientSettings, ICredentialsProvider credentialsProvider) 
             : base(clientSettings, credentialsProvider)
@@ -40,6 +43,12 @@ namespace TailendersApi.Client
         {
             var url = string.Format(Matches_Delete_Url, matchDetail.Id);
             await Delete(url);
+        }
+
+        public async Task BlockMatch(MatchDetail matchDetail)
+        {
+            var url = string.Format(Matches_Block_Url, matchDetail.Id);
+            await Send(HttpMethod.Post, url);
         }
     }
 }

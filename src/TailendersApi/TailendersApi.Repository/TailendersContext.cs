@@ -45,6 +45,16 @@ namespace TailendersApi.Repository
                 .HasOne<ProfileEntity>(mc => mc.Profile)
                 .WithMany(p => p.MatchContactPreferences)
                 .HasForeignKey(mc => mc.ProfileId);
+
+            modelBuilder.Entity<BlockedProfileEntitiy>()
+                .HasOne<ProfileEntity>(bp => bp.Profile)
+                .WithOne()
+                .HasForeignKey<BlockedProfileEntitiy>(bp => bp.ProfileId);
+
+            modelBuilder.Entity<ReportedProfileEntity>()
+                .HasOne<ProfileEntity>(bp => bp.Profile)
+                .WithOne()
+                .HasForeignKey<ReportedProfileEntity>(bp => bp.ProfileId);
         }
 
         public DbSet<ProfileEntity> Profiles { get; set; }
@@ -53,5 +63,7 @@ namespace TailendersApi.Repository
         public DbSet<MatchEntity> Matches { get; set; }
         public DbSet<ProfileMatchEntity> ProfileMatches { get; set; }
         public DbSet<MatchContactPreferenceEntity> MatchContactPreferences { get; set; }
+        public DbSet<BlockedProfileEntitiy> BlockedProfiles { get; set; }
+        public DbSet<ReportedProfileEntity> ReportedProfiles { get; set; }
     }
 }

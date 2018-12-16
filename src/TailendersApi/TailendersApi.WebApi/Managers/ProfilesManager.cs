@@ -20,6 +20,8 @@ namespace TailendersApi.WebApi.Managers
         Task<ProfileImage> UploadProfileImage(string profileId, string fileName, byte[] image);
 
         Task<IEnumerable<SearchProfile>> SearchForProfiles(string profileId);
+
+        Task ReportProfile(string profileId, ReportProfileReason reason);
     }
 
     public class ProfilesManager : IProfilesManager
@@ -90,8 +92,8 @@ namespace TailendersApi.WebApi.Managers
         {
             var profile = await GetProfile(profileId);
 
-            var categories = profile.SearchForCategory == (int)SearchCategory.Both 
-                                    ? new int[] { (int)SearchCategory.Men, (int)SearchCategory.Women}
+            var categories = profile.SearchForCategory == (int)SearchCategory.Both
+                                    ? new int[] { (int)SearchCategory.Men, (int)SearchCategory.Women }
                                     : new int[] { profile.SearchForCategory };
 
             var searchResults = await _profilesRepository.SearchForProfiles(profileId,
@@ -101,6 +103,11 @@ namespace TailendersApi.WebApi.Managers
 
             var profiles = searchResults.Select(ProfileMapper.ToSearchProfileContract);
             return profiles;
+        }
+
+        public async Task ReportProfile(string profileId, ReportProfileReason reason)
+        {
+            await _profilesRepository.ReportProfile(profileId, (int)reason);
         }
     }
 }

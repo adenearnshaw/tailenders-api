@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 using TailendersApi.Contracts;
 using TailendersApi.WebApi.Extensions;
 using TailendersApi.WebApi.Managers;
+using TailendersApi.WebApi.Model;
 
 namespace TailendersApi.WebApi.Controllers
 {
@@ -43,10 +44,9 @@ namespace TailendersApi.WebApi.Controllers
             }
 
             var profile = await _profilesManager.GetProfile(owner);
-            
+
             return Ok(profile);
         }
-
 
         // POST api/profiles
         [HttpPost]
@@ -160,6 +160,27 @@ namespace TailendersApi.WebApi.Controllers
             var matches = await _matchesManager.GetProfileMatches(id);
 
             return Ok(matches);
+        }
+
+        // POST api/profiles/report/d12cc0c1-c531-4e15-95a8-2093b951597d
+        [HttpPost("report/{profileId}")]
+        public async Task<IActionResult> ReportProfile(string profileId, [FromBody]ProfileReportInput input)
+        {
+            var hasScope = User.HasRequiredScopes(ReadPermission);
+            if (!hasScope)
+            {
+                return Unauthorized();
+            }
+
+            var owner = User.CheckClaimMatch(ObjectIdElement);
+            if (string.IsNullOrEmpty(owner))
+            {
+                return Forbid();
+            }
+
+            await _profilesManager.ReportProfile(profileId, input.ReportProfileReason);
+
+            return Ok();
         }
     }
 }
